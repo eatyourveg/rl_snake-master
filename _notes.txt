@@ -1,0 +1,31 @@
+[278,2,0] 1 click for gold star
+skips 103 chest
+blue stars are 5 10 20
+col 1000 is col 1
+
+hidden chest with hidden spot on side. jumps
+hidden tile with revealed tile behind doesnt jump
+hidden tile behind "revealed" chest jumps
+chest doesnt reveal adjacent
+cant click behind revealed chests
+when jumping, treat chest tile as an A. if tile A after it is revealed
+
+unrevealed chest doesnt reveal other tiles to click
+unrevealed chest as an A tile when revealing others
+9 jumps to 10
+32-5 hidden, 33-5 not hidden. doesnt unhide
+
+49 open 48. chest not visible.jumps 2 columns to 51
+50-2 is a hidden tile but because 51-2 is revealed
+
+60 doesnt reveal the tile behind it
+220 has revealed tile behind chest but doesnt jump
+256 treasure only visibile tile. skips to 257.
+365. hidden in front. 363 doesnt jump
+366 cant click behind revealed chests
+368. hidden chest with hidden spot on side. jumps
+
+733, revealed chest doesnt reveal above hidden tile
+899, after chest col, does it jump b/c the hidden tile after chest or because the above hidden has revealed tiles behind
+
+ // tile 148. hidden but in front is visible. it should not be revealed??

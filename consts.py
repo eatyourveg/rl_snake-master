@@ -1,0 +1,17543 @@
+from enum import Enum
+
+
+
+class TileType(Enum):
+    # Name   = (Symbol, Image Path, reward)
+    SPACE    = ('A', 'assets/dirt_dt.png', 0)
+    HIDDEN   = ('H', 'assets/hidden_dt.png', 0)
+    GRASS    = ('G', 'assets/grass_dt.png', 0)
+    STARB    = ('B', 'assets/blue_dt.png', 1)
+    STARY    = ('Y', 'assets/yellow_dt.png', 3)
+    STONE    = ('S', 'assets/stone_dt.png', 0)
+    ROCKET   = ('R', 'assets/rocket_dt.png', 10)
+    BOMB     = ('O', 'assets/bomb_dt.png', 10)
+    CHESTR   = ('Z', 'assets/chest_dt.png', 15)
+    CHESTB   = ('X', 'assets/chest_dt.png', 15)
+    CHESTOPEN = ('C', 'assets/chestopen_dt.png', 0)
+
+    def __str__(self):
+        return self.symbol
+
+    @property
+    def symbol(self):
+        return self.value[0]
+
+    @property
+    def image(self):
+        return self.value[1]
+    
+    @property
+    def reward(self):
+        return self.value[2]
+    
+    # Add this helper method inside the Enum class
+    @classmethod
+    def from_symbol(cls, symbol_string):
+        for member in cls:
+            if member.symbol == symbol_string:
+                return member
+        return None  # Return None if symbol isn't found
+    
+    @classmethod
+    def isChest(cls, symbol): return symbol in (TileType.CHESTR,TileType.CHESTB,TileType.CHESTOPEN)
+
+    def claimTile(game_state, tiletype):
+        """Execute logic based on which action is active."""
+        match tiletype:
+            case TileType.ROCKET:
+                game_state.rockets += 1
+                print(game_state.rockets)
+                
+            case TileType.BOMB:
+                game_state.bombs += 1
+                
+            # case TileType.STARB:
+            #     game_state
+TILE_TYPE_MEMBERS = list(TileType)
+
+hiddenTiles2025MAY =[
+    '2,0', '7,0', '8,5', '10,3', '11,1', '12,5', '13,4', '21,4', '23,2', '24,1', '27,3', '28,4', 
+    '29,3', '30,0', '32,0', '32,5', '35,2', '36,5', '37,1', '41,3', '41,5', '42,4', '46,2', '46,4', 
+    '47,5', '49,4', '50,2', '50,5', '51,0', '52,1', '55,4', '57,1', '57,5', '62,3', '63,5', '64,1', 
+    '67,3', '67,5', '70,0', '70,2', '71,5', '73,0', '73,3', '75,1', '77,5', '79,0', '79,2', '79,4', 
+    '81,0', '81,4', '82,1', '82,5', '84,1', '85,1', '86,0', '88,2', '88,5', '90,0', '92,3', '94,5', 
+    '97,0', '99,1', '100,5', '104,2', '108,4', '109,5', '114,5', '114,2', '118,3', '118,0', '120,5', 
+    '120,1', '120,3', '122,0', '123,5', '126,5', '130,2', '132,2', '132,4', '134,4', '135,2', '141,0', 
+    '141,4', '143,5', '144,2', '146,1', '147,2', '148,3', '148,1', '151,3', '152,1', '152,4',      
+    '154,0', '156,0', '158,0', '160,0', '152,1', '157,1', '163,1', '154,2', '152,4', '155,4', 
+    '159,4', '157,5', '170,1', '172,1', '170,3', '172,5', '175,5', '182,0', '187,0', '185,1', 
+    '179,2', '185,3', '188,3', '187,4', '188,5', '193,0', '193,2', '197,1', '197,5', '199,2', 
+    '199,5', '200,4', '201,3', '205,1', '206,2', '206,5', '208,0', '208,2', '209,1', '211,0', 
+    '212,1', '213,5', '215,1', '216,5', '218,2', '218,5', '219,0', '220,1', '222,3', '225,3', 
+    '226,1', '226,4', '227,0', '227,3', '228,1', '231,5', '235,5', '237,1', '238,5', '240,1', 
+    '241,0', '243,5', '245,1', '246,3', '246,5', '249,3', '250,0', '251,2', '253,0', '254,5', 
+    '256,5', '258,2', '258,4', '258,5', '261,0', '263,0', '264,3', '273,0', '275,2', '275,5', 
+    '276,4', '277,0', '278,1', '280,0', '280,4', '281,5', '282,0', '286,3', '286,5', '288,1', 
+    '289,2', '289,4', '290,0', '291,4', '292,5', '293,0', '293,2', '294,5', '295,1', '296,0', 
+    '299,5', '301,2', '303,4', '308,4', '310,2', '310,5', '312,0', '313,1', '314,3', '315,5', 
+    '316,3', '317,1', '318,4', '319,5', '322,0', '324,5', '329,5', '330,1', '331,2', '332,1', 
+    '332,3', '333,2', '333,4', '341,2', '344,0', '344,2', '345,5', '346,1', '347,2', '348,1', 
+    '348,5', '353,4', '356,3', '359,0', '359,4', '362,0', '362,2', '364,1', '366,0', '366,3', 
+    '368,5', '369,1', '371,2', '372,1', '373,0', '373,3', '375,5', '376,2', '377,1', '379,0', 
+    '379,5', '382,1', '382,3', '382,5', '383,0', '384,2', '384,4', '387,2', '392,2', '394,0', 
+    '394,5', '397,1', '397,5', '399,2', '400,1', '401,0', '401,5', '402,2', '403,0', '403,5', 
+    '404,1', '405,0', '405,2', '408,5', '410,4', '411,1', '413,0', '413,2', '419,2', '420,0', 
+    '420,3', '421,5', '422,3', '424,0', '424,3', '425,5', '427,3', '430,1', '431,3', '434,2', 
+    '434,4', '435,1', '437,2', '438,4', '441,1', '442,2', '443,3', '444,0', '444,2', '444,5', 
+    '446,3', '449,4', '451,1', '451,3', '453,2', '454,0', '458,1', '459,0', '459,3', '460,1', 
+    '464,3', '465,4', '466,1', '468,2', '469,5', '470,1', '472,2', '475,3', '477,0', '477,3', 
+    '479,0', '481,1', '481,3', '482,0', '484,1', '484,4', '487,3', '488,0', '492,0', '493,2', 
+    '493,4', '495,4', '496,0', '497,5', '498,1', '500,3', "501,0", "501,2", "503,0", "505,5", "507,1", "509,5", "511,1", "512,5", "515,4", "518,1", 
+  "518,5", "528,4", "529,0", "529,5", "531,4", "536,4", "537,5", "542,1", "543,0", "544,1", 
+  "544,4", "545,5", "546,2", "547,5", "550,3", "551,4", "552,1", "554,1", "555,2", "556,4", 
+  "557,2", "558,4", "559,0", "560,1", "560,5", "561,3", "562,2", "563,5", "564,2", "568,1", 
+  "569,2", "571,0", "571,2", "573,2", "573,5", "575,3", "576,0", "577,5", "579,2", "579,5", 
+  "581,1", "581,4", "584,1", "586,1", "588,0", "590,4", "592,5", "594,0", "596,0", "596,4", 
+  "599,4", "600,5", "602,0", "602,5", "603,4", "605,0", "612,5", "615,4", "617,1", "619,2", 
+  "621,4", "624,3", "625,5", "627,5", "628,2", "629,1", "629,3", "635,4", "636,0", "637,2", 
+  "638,5", "640,0", "644,0", "645,2", "648,0", "648,3", "648,5", "649,2", "650,3", "652,0", 
+  "653,3", "655,1", "658,0", "659,2", "660,3", "661,1", "663,2", "669,0", "669,2", "672,3", 
+  "673,1", "674,2", "676,0", "676,4", "679,3", "679,5", "680,2", "682,3", "684,5", "686,5", 
+  "687,0", "688,1", "690,3", "690,5", "692,5", "693,3", "695,0", "695,5", "699,1", "700,0", 
+  "700,5", "702,3", "703,2", "705,2", "707,3", "709,2", "714,1", "715,2", "717,2", "717,4", 
+  "719,0", "720,1", "721,5", "722,4", "723,3", "724,0", "724,5", "730,0", "731,3", "732,2", 
+  "735,0", "738,0", "741,1", "742,3", "745,4", "747,2", "747,5", "751,5", "752,3", "753,0", 
+  "754,4", "756,4", "757,2", "762,0", "762,3", "764,1", "765,2", "765,4", "767,1", "767,5", 
+  "769,0", "769,2", "772,4", "773,2", "773,5", "776,5", "777,0", "779,0", "779,5", "782,2", 
+  "785,2", "786,3", "786,5", "790,4", "791,1", "799,4", "800,0", "801,2", "801,4", "802,5", 
+  "805,2", "805,5", "808,1", "809,0", "812,5", "813,1", "818,1", "818,3", "820,5", "821,3", 
+  "823,0", "823,5", "828,0", "829,3", "830,2", "830,4", "832,1", "835,2", "835,4", "836,3", 
+  "839,3", "839,5", "842,0", "842,3", "842,5", "847,5", "848,0", "848,4", "850,3", "851,0", 
+  "854,4", "857,2", "858,0", "858,3", "859,2", "859,4", "861,2", "861,5", "868,0", "868,5", 
+  "870,3", "871,0", "871,4", "873,4", "876,4", "877,0", "879,2", "880,5", "883,2", "887,3", 
+  "889,2", "892,3", "894,4", "895,0", "895,3", "897,1", "897,4", "899,1", "900,4", "902,0", 
+  "903,3", "903,5", "906,0", "906,5", "909,2", "911,4", "912,1", "913,4", "916,3", "917,4", 
+  "921,2", "921,4", "922,0", "923,1", "923,5", "925,0", "925,4", "926,5", "929,4", "930,3", 
+  "933,3", "934,0", "936,5", "938,1", "938,3", "940,1", "942,0", "942,3", "944,2", "945,0", 
+  "949,5", "952,0", "953,2", "953,4", "955,1", "955,4", "956,3", "957,5", "962,5", "963,0", 
+  "964,3", "965,0", "965,5", "967,0", "970,3", "971,0", "972,2", "973,5", "974,1", "974,3", 
+  "975,0", "976,3", "977,2", "978,1", "978,4", "980,2", "980,4", "982,4", "984,3", "985,5", 
+  "986,0", "986,3", "988,2", "988,5", "990,3", "992,0", "993,2", "995,5", "999,0", "999,5", 
+  "1000,1", "1001,0"
+]
+
+nextMoves = [
+    ["6,0", 1],  ["8,4", 1],  
+    ["9,5", 1], 
+    ["9,3", 1],  ["11,3", 1], ["12,4", 1], ["15,0", 1], ["16,0", 1],
+    ["17,0", 3], ["21,0", 1], ["22,0", 1], ["23,0", 1], ["22,0", 3],
+    ["27,0", 1], ["29,0", 1], ["32,2", 1], ["32,2", 2], ["36,1", 1],
+    ["38,3", 1], ["39,3", 1], ["40,3", 1], ["45,2", 1], ["47,2", 1],
+    ["48,3", 1], ["51,3", 2], ["49,5", 1],
+    ["55,5", 1], ["55,4", 2], ["59,1", 1], ["60,1", 1], ["61,1", 1],
+    ["62,1", 1], ["56,4", 3], ["59,4", 1],
+    ["64,4", 1], ["67,4", 1], ["69,2", 1], ["71,2", 1], ["71,2", 2],
+    ["74,3", 1], ["75,3", 1], ["78,3", 1], ["79,3", 1], ["80,4", 1],
+    ["82,4", 1], ["84,4", 1], ["86,4", 1], ["83,5", 3], ["91,4", 1],
+    ["92,4", 1], ["94,2", 2], ["93,0", 1],
+    ["94,5", 3], ["98,5", 1], ["99,5", 1], ["104,5", 1], ["105,5", 1],
+    ["106,5", 1], ["103,4", 3], ["109,4", 1], ["112,0", 1], ["109,5", 3],
+    ["115,5", 1],
+    ["116,1", 2], ["120,0", 1], ["123,4", 1], ["124,1", 3], ["129,1", 1],
+    ["130,1", 1], ["132,1", 1], ["127,5", 3], ["135,4", 1], ["139,3", 1],
+    ["134,5", 3], ["143,0", 1], ["144,0", 1], ["148,4", 1], ["148,3", 3],
+    ["151,4", 1], ["147,2", 3], ["156,2", 1], ["156,1", 1], ["158,4", 1],
+    ["160,4", 1], ["157,1", 3], ["167,4", 1], ["170,5", 1], ["171,5", 1],
+    ["175,4", 1], ["177,3", 1], ["177,2", 1], ["178,4", 1],
+    ["178,2", 1], ["181,0", 1], ["183,0", 1], ["183,0", 2], ["181,5", 3],
+    ["189,5", 1], ["192,5", 1], ["193,5", 1], ["193,5", 2], ["195,5", 1],
+    ["196,5", 1], ["198,5", 1], ["200,5", 1], ["201,4", 1], ["204,1", 1],
+    ["205,2", 1], ["206,2", 2], ["209,2", 1], ["210,1", 1], ["206,0", 3],
+    ["215,5", 1], ["218,3", 1], ["218,2", 2], ["220,5", 1],
+    ["222,5", 1], ["223,5", 1], ["226,5", 1], ["227,4", 1], ["227,3", 2],
+    ["229,3", 1], ["230,3", 2], ["231,1", 1],
+    ["227,0", 3], ["230,1", 3], ["236,1", 1], ["238,2", 2], ["238,4", 3],
+    ["243,3", 1], ["245,4", 1], ["246,4", 1], ["247,4", 1], ["249,0", 1],
+    ["251,0", 1], ["252,0", 1], ["256,3", 1],
+    ["258,1", 1], ["259,0", 3], ["263,3", 1], ["268,5", 1], ["269,5", 1],
+    ["265,2", 3], ["271,2", 1], ["272,2", 1], ["269,5", 3], ["271,5", 1],
+    ["275,0", 1], ["276,2", 2], ["276,5", 1], ["278,2", 1], ["280,2", 2],
+    ["286,0", 1], ["287,0", 1], ["287,1", 1], ["289,1", 1], ["284,4", 3],
+    ["292,4", 1], ["293,5", 1], ["295,5", 1], ["295,5", 2], ["297,5", 1],
+    ["298,5", 1], ["300,5", 1], ["300,4", 1], ["300,4", 2], ["302,4", 1],
+    ["301,2", 3], ["307,2", 1], ["307,2", 2], ["307,4", 1],
+    ["308,1", 3], ["315,1", 1], ["312,0", 3], ["311,5", 3], ["318,5", 1],
+    ["321,4", 1], ["322,4", 1], ["323,4", 1], ["324,4", 1], ["328,5", 1],
+    ["330,5", 1], ["331,5", 1], ["333,5", 1], ["335,4", 1], ["338,5", 1],
+    ["340,2", 1], ["343,1", 1],
+    ["344,5", 1], ["346,2", 1], ["348,2", 1], ["352,5", 1], ["353,5", 1],
+    ["357,0", 1], ["353,4", 3], ["362,4", 1], ["357,0", 3], ["365,1", 1],
+    ["365,0", 1], ["363,5", 3], ["368,4", 1],
+    ["369,5", 1], ["371,4", 1], ["373,4", 1], ["374,3", 2], ["377,2", 1],
+    ["378,2", 1], ["379,2", 1], ["375,4", 3], ["383,5", 1], ["384,1", 1],
+    ["385,2", 1], ["386,2", 1], ["390,4", 1], ["391,4", 1], ["392,4", 1],
+    ["394,4", 1], ["395,4", 1], ["398,3", 1], ["399,3", 1], ["401,3", 2],
+    ["401,0", 3], ["406,4", 3], ["410,4", 2], ["409,2", 1],
+    ["411,3", 2], ["415,2", 1], ["418,4", 1], ["420,4", 1], ["421,3", 1],
+    ["423,3", 1], ["426,0", 1], ["431,5", 1], ["433,5", 1], ["434,5", 1],
+    ["437,5", 1], ["438,5", 1], ["438,4", 2], ["440,4", 1], ["441,4", 2],
+    ["443,2", 1], ["442,5", 3], ["447,5", 1], ["448,5", 1], ["451,0", 1],
+    ["453,3", 1], ["454,2", 3], ["449,3", 1],
+    ["456,2", 1], ["457,2", 1],
+    ["452,1", 3], ["461,1", 1], ["464,1", 1], ["464,1", 2], ["468,5", 1],
+    ["470,5", 1], ["472,1", 1], ["474,3", 1], ["476,0", 1], ["479,1", 1],
+    ["480,1", 1], ["483,5", 1],
+    ["483,4", 1], ["487,1", 1], ["488,1", 1], ["489,1", 1], ["485,3", 3],
+    ["492,4", 1], ["494,4", 1], ["497,2", 1], ["496,3", 3], ["501,3", 1],
+    ["503,2", 1], ["505,3", 1], ["506,3", 2], ["509,1", 1], ["510,4", 2],
+    ["515,0", 1], ["517,1", 1], ["520,5", 1], ["515,0", 3], ["524,4", 1],
+    ["524,4", 2], ["524,1", 1],
+    ["528,0", 1], ["531,0", 1], ["532,3", 1],
+    ["533,4", 1], ["533,4", 2], ["534,5", 3], ["539,2", 1], ["543,4", 1],
+    ["545,4", 1], ["546,5", 1], ["547,4", 1], ["549,4", 2], ["549,2", 3],
+    ["554,2", 2], ["553,0", 1],
+    ["558,2", 1], ["560,4", 1], ["557,2", 3], ["564,0", 2], ["567,0", 1],
+    ["564,2", 3], ["572,2", 1], ["572,0", 3], ["578,0", 1], ["579,0", 1],
+    ["579,2", 2], ["583,4", 1], ["586,4", 1], ["588,3", 2], ["591,4", 1],
+    ["592,4", 1], ["588,0", 3], ["590,4", 3], ["598,0", 1], ["599,0", 1],
+    ["603,2", 1], ["604,4", 2], ["601,1", 3], ["605,1", 1],
+    ["611,2", 1], ["614,2", 1], ["613,1", 3], ["617,4", 1], ["619,1", 1],
+    ["621,2", 1], ["622,4", 3], ["627,2", 1], ["627,2", 2], ["631,4", 3],
+    ["634,4", 1], ["636,4", 1], ["637,4", 1],
+    ["632,0", 3], ["639,0", 1], ["639,0", 2], ["642,0", 1], ["643,0", 1],
+    ["646,0", 1], ["647,0", 1], ["650,0", 1], ["652,2", 1], ["655,5", 1],
+    ["658,5", 1], ["656,1", 3], ["663,5", 2], ["667,5", 1], ["663,2", 3],
+    ["665,3", 1],
+    ["670,2", 1], ["671,2", 1], ["671,3", 1], ["674,5", 1], ["675,2", 2],
+    ["678,1", 1], ["679,1", 1], ["680,1", 1], ["682,1", 1], ["683,1", 1],
+    ["683,1", 2], ["686,2", 1], ["688,5", 1], ["689,5", 1], ["690,4", 1],
+    ["691,5", 1], ["693,5", 1],
+    ["693,0", 3], ["700,4", 1], ["702,5", 1], ["704,4", 1], ["708,0", 1],
+    ["706,4", 3], ["708,4", 1],
+    ["711,4", 1], ["713,4", 2], ["714,2", 1], ["716,2", 1], ["714,1", 3],
+    ["719,1", 1], ["714,4", 3], ["723,4", 1], ["724,4", 1], ["730,3", 1],
+    ["732,3", 1],
+    ["731,3", 3], ["729,1", 3], ["738,1", 1], ["740,1", 1], ["742,1", 1],
+    ["744,1", 1], ["745,1", 1], ["740,5", 3], ["751,2", 1], ["752,2", 1],
+    ["753,2", 1], ["756,2", 1], ["758,1", 2], ["758,0", 3], ["764,5", 1],
+    ["765,5", 1], ["766,5", 1], ["761,2", 3], ["769,2", 2], ["771,2", 1],
+    ["772,2", 1], ["774,3", 1], ["775,3", 1], ["776,3", 1], ["778,5", 1],
+    ["781,0", 1], ["782,0", 1], ["780,3", 3], ["787,3", 1], ["787,3", 2],
+    ["789,3", 1],
+    ["789,4", 1], ["784,0", 3], ["794,3", 1], ["794,3", 2], ["796,2", 1],
+    ["798,2", 1],
+    ["797,0", 2], ["801,0", 1], ["802,1", 1], ["803,1", 1],
+    ["804,5", 1], ["806,2", 2], ["809,1", 1], ["810,0", 1], ["811,0", 1],
+    ["807,3", 3], ["813,3", 1],
+    ["814,0", 3], ["817,3", 1], ["821,0", 1], ["823,3", 1], ["824,5", 2],
+    ["826,5", 1], ["828,3", 1], ["830,3", 1], ["833,4", 1], ["834,4", 1],
+    ["835,3", 1], ["838,1", 1], ["840,1", 1], ["842,4", 1], ["842,4", 2],
+    ["844,5", 1], ["847,0", 1], ["846,2", 3], ["852,2", 1], ["853,2", 1],
+    ["854,2", 1], ["856,3", 1], ["859,5", 1], ["861,4", 1], ["862,4", 1],
+    ["864,3", 2], ["868,1", 1], ["869,1", 1], ["865,4", 3], ["872,4", 1],
+    ["874,4", 1], ["877,2", 1], ["878,2", 1],
+    ["876,1", 3], ["882,2", 1], ["884,5", 2], ["887,5", 1], ["888,5", 1],
+    ["890,5", 1], ["891,5", 1], ["892,5", 1], ["893,4", 1], ["895,4", 1],
+    ["896,4", 1], ["898,4", 1], ["899,4", 1],
+    ["902,3", 1], ["904,3", 1], ["904,3", 2], ["904,0", 1],
+    ["909,4", 1], ["911,1", 1], ["913,1", 1], ["915,1", 1], ["917,1", 1],
+    ["918,4", 3], ["923,4", 1], ["924,4", 1], ["923,5", 3], ["927,4", 1],
+    ["930,1", 1], ["932,3", 1], ["934,3", 1], ["938,2", 1], ["935,4", 3],
+    ["942,1", 1], ["943,2", 1], ["944,2", 2], ["947,4", 1], ["949,4", 1],
+    ["950,4", 1], ["948,4", 3], ["954,4", 1], ["956,4", 1], ["959,1", 2],
+    ["955,4", 3], ["961,1", 3], ["964,2", 1],
+    ["966,0", 1], ["963,4", 3], ["968,4", 2], ["969,5", 2], ["972,5", 1],
+    ["975,5", 1], ["976,5", 1], ["977,4", 1], ["979,2", 1], ["981,2", 2],
+    ["983,3", 1], ["985,3", 1], ["988,0", 1], ["989,2", 3], ["992,3", 1],
+    ["991,1", 3], ["996,0", 1], ["997,0", 1], ["999,1", 1],
+    ["1001,3", 1], ["998,2", 3], ["1005,0", 1]
+]
+
+
+
+coords = {
+    "0": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "2": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "3": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "4": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "5": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "6": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "7": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "8": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "9": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.CHESTR
+    },
+    "10": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "11": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "12": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "13": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "14": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "15": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "16": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "17": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "18": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "19": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "20": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "21": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "22": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "23": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "24": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "25": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "26": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "27": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "28": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "29": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "30": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "31": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "32": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "33": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "34": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "35": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "36": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "37": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "38": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "39": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "40": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "41": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "42": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "43": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "44": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "45": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "46": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "47": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "48": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "49": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.CHESTB
+    },
+    "50": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "51": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "52": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "53": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "54": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "55": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "56": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "57": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "58": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "59": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.CHESTR,
+      "5": TileType.STONE
+    },
+    "60": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "61": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "62": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "63": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "64": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "65": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "66": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "67": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "68": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "69": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "70": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "71": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "72": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "73": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "74": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "75": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "76": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "77": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "78": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "79": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "80": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "81": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "82": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "83": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "84": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "85": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "86": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "87": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "88": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "89": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "90": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "91": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "92": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "93": {
+      "0": TileType.CHESTB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "94": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "95": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "96": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "97": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "98": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "99": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "100": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "101": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "102": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "103": {
+      "0": TileType.CHESTB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "104": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "105": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "106": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "107": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "108": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "109": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "110": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "111": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "112": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "113": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "114": {
+      "0": TileType.STONE,
+      "1": TileType.BOMB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "115": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.CHESTR
+    },
+    "116": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "117": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "118": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "119": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "120": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "121": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "122": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "123": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "124": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "125": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "126": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "127": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "128": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "129": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.ROCKET
+    },
+    "130": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "131": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "132": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "133": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "134": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "135": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "136": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "137": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "138": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "139": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "140": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "141": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "142": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "143": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "144": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "145": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "146": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "147": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "148": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "149": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "150": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "151": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.STARB
+    },
+    "152": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "153": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.ROCKET,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "154": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "155": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "156": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "157": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "158": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "159": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "160": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "161": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "162": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "163": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "164": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "165": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "166": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "167": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "168": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "169": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "170": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "171": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "172": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "173": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "174": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "175": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "176": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "177": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.CHESTR,
+      "3": TileType.BOMB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "178": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.CHESTB,
+      "5": TileType.STONE
+    },
+    "179": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "180": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "181": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "182": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "183": {
+      "0": TileType.BOMB,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "184": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "185": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "186": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "187": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "188": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "189": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "190": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "191": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "192": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "193": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "194": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "195": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "196": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "197": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "198": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "199": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "200": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "201": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "202": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "203": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "204": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "205": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "206": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "207": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "208": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "209": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "210": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "211": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "212": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "213": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "214": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "215": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "216": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "217": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "218": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "219": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "220": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.CHESTR
+    },
+    "221": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "222": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "223": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "224": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "225": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "226": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "227": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "228": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.ROCKET,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "229": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "230": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "231": {
+      "0": TileType.STARB,
+      "1": TileType.CHESTB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "232": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "233": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "234": {
+      "0": TileType.BOMB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "235": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "236": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.GRASS
+    },
+    "237": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "238": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "239": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "240": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "241": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "242": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "243": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "244": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "245": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "246": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "247": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "248": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "249": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "250": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "251": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "252": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "253": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "254": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "255": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "256": {
+      "0": TileType.ROCKET,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.CHESTR,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "257": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "258": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "259": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "260": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "261": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "262": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "263": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "264": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "265": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "266": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "267": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "268": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "269": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "270": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "271": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.CHESTB
+    },
+    "272": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "273": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "274": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "275": {
+      "0": TileType.ROCKET,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "276": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "277": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "278": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "279": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "280": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "281": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "282": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "283": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "284": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "285": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "286": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "287": {
+      "0": TileType.GRASS,
+      "1": TileType.BOMB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "288": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "289": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "290": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "291": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "292": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "293": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "294": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "295": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "296": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "297": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "298": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "299": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "300": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "301": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "302": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "303": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "304": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "305": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "306": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "307": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.CHESTR,
+      "5": TileType.STARY
+    },
+    "308": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "309": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "310": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "311": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "312": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "313": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "314": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "315": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "316": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "317": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "318": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.ROCKET
+    },
+    "319": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "320": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "321": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "322": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "323": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "324": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "325": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "326": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "327": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "328": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "329": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "330": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.BOMB
+    },
+    "331": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "332": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "333": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "334": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "335": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "336": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "337": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "338": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.ROCKET
+    },
+    "339": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "340": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "341": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "342": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "343": {
+      "0": TileType.GRASS,
+      "1": TileType.CHESTR,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "344": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "345": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "346": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "347": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "348": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "349": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "350": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "351": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "352": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "353": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "354": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "355": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "356": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "357": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "358": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.GRASS
+    },
+    "359": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "360": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "361": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "362": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "363": {
+      "0": TileType.BOMB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "364": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "365": {
+      "0": TileType.GRASS,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "366": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "367": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "368": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.CHESTB,
+      "5": TileType.SPACE
+    },
+    "369": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "370": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "371": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "372": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "373": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "374": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "375": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "376": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "377": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "378": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "379": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "380": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "381": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "382": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "383": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.BOMB
+    },
+    "384": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "385": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "386": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "387": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "388": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "389": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "390": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "391": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "392": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "393": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "394": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "395": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "396": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "397": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "398": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "399": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "400": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "401": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "402": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "403": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "404": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "405": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "406": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "407": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "408": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "409": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTB,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "410": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "411": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "412": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "413": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "414": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "415": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "416": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "417": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "418": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.BOMB,
+      "5": TileType.STONE
+    },
+    "419": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "420": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "421": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "422": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "423": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "424": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "425": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "426": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "427": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "428": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "429": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "430": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "431": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "432": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "433": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "434": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "435": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "436": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "437": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "438": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "439": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "440": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "441": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "442": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "443": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "444": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "445": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "446": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "447": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "448": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.ROCKET
+    },
+    "449": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.CHESTR,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "450": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.ROCKET,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "451": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "452": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "453": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "454": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "455": {
+      "0": TileType.BOMB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "456": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "457": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTR,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "458": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "459": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "460": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "461": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "462": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "463": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "464": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "465": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "466": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "467": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "468": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "469": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "470": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "471": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "472": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "473": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "474": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "475": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "476": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "477": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "478": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "479": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "480": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "481": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "482": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "483": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.CHESTB
+    },
+    "484": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "485": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "486": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "487": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "488": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "489": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "490": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "491": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "492": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "493": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "494": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.BOMB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "495": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "496": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "497": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "498": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "499": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "500": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "501": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "502": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "503": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "504": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "505": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "506": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "507": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "508": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "509": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "510": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "511": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "512": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "513": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "514": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "515": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "516": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "517": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "518": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "519": {
+      "0": TileType.BOMB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "520": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "521": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "522": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "523": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.ROCKET
+    },
+    "524": {
+      "0": TileType.STARB,
+      "1": TileType.CHESTB,
+      "2": TileType.STARY,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "525": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "526": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "527": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "528": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "529": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "530": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "531": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "532": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.CHESTR,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "533": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.BOMB,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "534": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "535": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "536": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "537": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "538": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "539": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "540": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "541": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "542": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "543": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "544": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "545": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "546": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "547": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "548": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "549": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "550": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "551": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "552": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "553": {
+      "0": TileType.CHESTR,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "554": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "555": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "556": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "557": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "558": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "559": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "560": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "561": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "562": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "563": {
+      "0": TileType.STARB,
+      "1": TileType.BOMB,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "564": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "565": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "566": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "567": {
+      "0": TileType.CHESTB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "568": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "569": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "570": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "571": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "572": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "573": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "574": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "575": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "576": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "577": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "578": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "579": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "580": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "581": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "582": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "583": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "584": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "585": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "586": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "587": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "588": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "589": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "590": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "591": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "592": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "593": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "594": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "595": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "596": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "597": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "598": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "599": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "600": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "601": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "602": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "603": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "604": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "605": {
+      "0": TileType.SPACE,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "606": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "607": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "608": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "609": {
+      "0": TileType.GRASS,
+      "1": TileType.BOMB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "610": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "611": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "612": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "613": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "614": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "615": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "616": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "617": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "618": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "619": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "620": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "621": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "622": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "623": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "624": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "625": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "626": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "627": {
+      "0": TileType.ROCKET,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "628": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "629": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "630": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "631": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "632": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "633": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "634": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "635": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "636": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "637": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.CHESTB,
+      "5": TileType.STONE
+    },
+    "638": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "639": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "640": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "641": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "642": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "643": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "644": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "645": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "646": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "647": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "648": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "649": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "650": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "651": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "652": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "653": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "654": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "655": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "656": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "657": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "658": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "659": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "660": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "661": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "662": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.ROCKET
+    },
+    "663": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "664": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "665": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.CHESTR,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "666": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "667": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "668": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "669": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "670": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "671": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "672": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "673": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "674": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "675": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.BOMB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "676": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "677": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "678": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "679": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "680": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "681": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "682": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "683": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "684": {
+      "0": TileType.ROCKET,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "685": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "686": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "687": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "688": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "689": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "690": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "691": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "692": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "693": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.CHESTB
+    },
+    "694": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "695": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "696": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "697": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "698": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "699": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "700": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "701": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "702": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "703": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "704": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "705": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "706": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "707": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "708": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.CHESTR,
+      "5": TileType.STONE
+    },
+    "709": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "710": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "711": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "712": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "713": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "714": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "715": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "716": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "717": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "718": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "719": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "720": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "721": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "722": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "723": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "724": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "725": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "726": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "727": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.BOMB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "728": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "729": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "730": {
+      "0": TileType.SPACE,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "731": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "732": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.CHESTB,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "733": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "734": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "735": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "736": {
+      "0": TileType.STARY,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "737": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "738": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "739": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "740": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "741": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "742": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "743": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "744": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "745": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "746": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "747": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "748": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "749": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "750": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "751": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "752": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "753": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "754": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "755": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "756": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "757": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "758": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "759": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "760": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "761": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "762": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "763": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "764": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "765": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "766": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "767": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "768": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "769": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.BOMB,
+      "4": TileType.ROCKET,
+      "5": TileType.GRASS
+    },
+    "770": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "771": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "772": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "773": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "774": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "775": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "776": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "777": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "778": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "779": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "780": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "781": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "782": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "783": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "784": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "785": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "786": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "787": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "788": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "789": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.CHESTR,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "790": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "791": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "792": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "793": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "794": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "795": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "796": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "797": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "798": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "799": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "800": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "801": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "802": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "803": {
+      "0": TileType.GRASS,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "804": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "805": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "806": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "807": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "808": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "809": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "810": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "811": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "812": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "813": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.CHESTB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "814": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "815": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "816": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "817": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "818": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "819": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "820": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "821": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "822": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "823": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "824": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "825": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "826": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "827": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "828": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "829": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "830": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "831": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "832": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "833": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "834": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "835": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "836": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "837": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "838": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "839": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "840": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "841": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.ROCKET,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "842": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "843": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.BOMB
+    },
+    "844": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "845": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "846": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "847": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "848": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "849": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "850": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "851": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "852": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "853": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "854": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "855": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "856": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "857": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "858": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "859": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "860": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "861": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "862": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "863": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "864": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.ROCKET
+    },
+    "865": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "866": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.BOMB,
+      "5": TileType.SPACE
+    },
+    "867": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "868": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "869": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "870": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "871": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "872": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "873": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "874": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "875": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "876": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "877": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "878": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "879": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "880": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "881": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "882": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "883": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "884": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "885": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "886": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "887": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "888": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "889": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "890": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "891": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "892": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "893": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "894": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "895": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "896": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "897": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "898": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "899": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.CHESTR,
+      "5": TileType.GRASS
+    },
+    "900": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "901": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "902": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "903": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "904": {
+      "0": TileType.CHESTB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "905": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "906": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "907": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "908": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "909": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "910": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "911": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "912": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "913": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "914": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "915": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "916": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "917": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "918": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "919": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "920": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STARB,
+      "5": TileType.BOMB
+    },
+    "921": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "922": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "923": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "924": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "925": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "926": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "927": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.CHESTR,
+      "5": TileType.GRASS
+    },
+    "928": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "929": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "930": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "931": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "932": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "933": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "934": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "935": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "936": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "937": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "938": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "939": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "940": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "941": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "942": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "943": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "944": {
+      "0": TileType.ROCKET,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "945": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "946": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "947": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "948": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "949": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "950": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "951": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "952": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "953": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "954": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "955": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "956": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "957": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "958": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "959": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "960": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "961": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "962": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "963": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "964": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.CHESTB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "965": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "966": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "967": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "968": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "969": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.BOMB
+    },
+    "970": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "971": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "972": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "973": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "974": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "975": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "976": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "977": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "978": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "979": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "980": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "981": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "982": {
+      "0": TileType.STARY,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "983": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "984": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "985": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "986": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "987": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "988": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "989": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "990": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "991": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "992": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "993": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "994": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "995": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "996": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "997": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "998": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "999": {
+      "0": TileType.SPACE,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1000": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1001": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1002": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1003": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1004": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1005": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1006": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1007": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1008": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.CHESTR
+    },
+    "1009": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1010": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1011": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1012": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1013": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1014": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1015": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1016": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1017": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1018": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1019": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1020": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1021": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1022": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1023": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1024": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1025": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1026": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "1027": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1028": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1029": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1030": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1031": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "1032": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1033": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1034": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "1035": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1036": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1037": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1038": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1039": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1040": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1041": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1042": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1043": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1044": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1045": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1046": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1047": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1048": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.CHESTB
+    },
+    "1049": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1050": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1051": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "1052": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1053": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1054": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1055": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1056": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1057": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1058": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.CHESTR,
+      "5": TileType.STONE
+    },
+    "1059": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1060": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "1061": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1062": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1063": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1064": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1065": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1066": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1067": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1068": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1069": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1070": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1071": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1072": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1073": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1074": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1075": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1076": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1077": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1078": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1079": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1080": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1081": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1082": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1083": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1084": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1085": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1086": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1087": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1088": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1089": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1090": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1091": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1092": {
+      "0": TileType.CHESTB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1093": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1094": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1095": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1096": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1097": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1098": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1099": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1100": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1101": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1102": {
+      "0": TileType.CHESTB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1103": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1104": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1105": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1106": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1107": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1108": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1109": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1110": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1111": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1112": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1113": {
+      "0": TileType.STONE,
+      "1": TileType.BOMB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1114": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.CHESTR
+    },
+    "1115": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1116": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1117": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1118": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1119": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1120": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1121": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1122": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "1123": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1124": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1125": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1126": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1127": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1128": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.ROCKET
+    },
+    "1129": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1130": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1131": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1132": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1133": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1134": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1135": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "1136": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1137": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1138": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1139": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1140": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1141": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1142": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1143": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1144": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1145": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1146": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1147": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1148": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1149": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1150": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.STARB
+    },
+    "1151": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1152": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.ROCKET,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1153": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1154": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1155": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1156": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1157": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1158": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1159": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1160": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1161": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1162": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1163": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1164": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1165": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1166": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1167": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1168": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1169": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1170": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "1171": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1172": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1173": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1174": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1175": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1176": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.CHESTR,
+      "3": TileType.BOMB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1177": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.CHESTB,
+      "5": TileType.STONE
+    },
+    "1178": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1179": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1180": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1181": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1182": {
+      "0": TileType.BOMB,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1183": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1184": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1185": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1186": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1187": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1188": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1189": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1190": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1191": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1192": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1193": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1194": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1195": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1196": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1197": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1198": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1199": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1200": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1201": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1202": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1203": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1204": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1205": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1206": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "1207": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1208": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1209": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1210": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1211": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1212": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1213": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1214": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1215": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1216": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1217": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1218": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1219": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.CHESTR
+    },
+    "1220": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1221": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "1222": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1223": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1224": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1225": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1226": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1227": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.ROCKET,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1228": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1229": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1230": {
+      "0": TileType.STARB,
+      "1": TileType.CHESTB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1231": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1232": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1233": {
+      "0": TileType.BOMB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1234": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1235": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.GRASS
+    },
+    "1236": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1237": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1238": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1239": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1240": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1241": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1242": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1243": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1244": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1245": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1246": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1247": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1248": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1249": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1250": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1251": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "1252": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1253": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1254": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1255": {
+      "0": TileType.ROCKET,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.CHESTR,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1256": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1257": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1258": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1259": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "1260": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1261": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1262": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1263": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1264": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1265": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1266": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1267": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1268": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1269": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1270": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.CHESTB
+    },
+    "1271": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1272": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1273": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1274": {
+      "0": TileType.ROCKET,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1275": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "1276": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1277": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1278": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1279": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1280": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1281": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1282": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1283": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1284": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1285": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1286": {
+      "0": TileType.GRASS,
+      "1": TileType.BOMB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1287": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1288": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1289": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1290": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1291": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1292": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1293": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1294": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1295": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1296": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1297": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1298": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1299": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1300": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1301": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1302": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1303": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1304": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1305": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1306": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.CHESTR,
+      "5": TileType.STARY
+    },
+    "1307": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1308": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1309": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1310": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1311": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1312": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1313": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1314": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1315": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1316": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1317": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.ROCKET
+    },
+    "1318": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1319": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1320": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1321": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1322": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1323": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1324": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1325": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1326": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1327": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1328": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1329": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.BOMB
+    },
+    "1330": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1331": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1332": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1333": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1334": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1335": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1336": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1337": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.ROCKET
+    },
+    "1338": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1339": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1340": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1341": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1342": {
+      "0": TileType.GRASS,
+      "1": TileType.CHESTR,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1343": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1344": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1345": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1346": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1347": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1348": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1349": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1350": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1351": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1352": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1353": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1354": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1355": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1356": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1357": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.GRASS
+    },
+    "1358": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1359": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1360": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1361": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1362": {
+      "0": TileType.BOMB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1363": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1364": {
+      "0": TileType.GRASS,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1365": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1366": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1367": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.CHESTB,
+      "5": TileType.SPACE
+    },
+    "1368": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "1369": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1370": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1371": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1372": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1373": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1374": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1375": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1376": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1377": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1378": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1379": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1380": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1381": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "1382": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.BOMB
+    },
+    "1383": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1384": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1385": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1386": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1387": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1388": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1389": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1390": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1391": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1392": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1393": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1394": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1395": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1396": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1397": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1398": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1399": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1400": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1401": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1402": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1403": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1404": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1405": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1406": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "1407": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1408": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTB,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1409": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1410": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1411": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1412": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1413": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1414": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1415": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1416": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1417": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.BOMB,
+      "5": TileType.STONE
+    },
+    "1418": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1419": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1420": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1421": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1422": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1423": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1424": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1425": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1426": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1427": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1428": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1429": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1430": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1431": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1432": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1433": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1434": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1435": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1436": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1437": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1438": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1439": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1440": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1441": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "1442": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1443": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1444": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1445": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1446": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1447": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.ROCKET
+    },
+    "1448": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.CHESTR,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1449": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.ROCKET,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1450": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1451": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1452": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1453": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1454": {
+      "0": TileType.BOMB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1455": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1456": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTR,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1457": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1458": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "1459": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1460": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1461": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1462": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1463": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1464": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1465": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1466": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1467": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1468": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1469": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1470": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1471": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1472": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1473": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1474": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1475": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1476": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1477": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1478": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1479": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1480": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1481": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1482": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.CHESTB
+    },
+    "1483": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1484": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1485": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1486": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1487": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1488": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1489": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1490": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1491": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1492": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1493": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.BOMB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1494": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1495": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1496": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1497": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1498": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1499": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1500": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1501": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1502": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1503": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1504": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1505": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1506": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1507": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1508": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1509": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1510": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1511": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1512": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1513": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1514": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1515": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1516": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1517": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1518": {
+      "0": TileType.BOMB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1519": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1520": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1521": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1522": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.ROCKET
+    },
+    "1523": {
+      "0": TileType.STARB,
+      "1": TileType.CHESTB,
+      "2": TileType.STARY,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1524": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1525": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1526": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1527": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1528": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1529": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1530": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1531": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.CHESTR,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1532": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.BOMB,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1533": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1534": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1535": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1536": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1537": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1538": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1539": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1540": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1541": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1542": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1543": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1544": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1545": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1546": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1547": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1548": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1549": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1550": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1551": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1552": {
+      "0": TileType.CHESTR,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1553": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1554": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1555": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1556": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1557": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1558": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1559": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1560": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1561": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1562": {
+      "0": TileType.STARB,
+      "1": TileType.BOMB,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1563": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1564": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1565": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1566": {
+      "0": TileType.CHESTB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1567": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1568": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1569": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1570": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1571": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1572": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1573": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1574": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1575": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1576": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1577": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1578": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1579": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1580": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1581": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1582": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1583": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1584": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1585": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1586": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1587": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1588": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1589": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1590": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1591": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1592": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1593": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1594": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1595": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1596": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1597": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1598": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1599": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1600": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1601": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1602": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1603": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1604": {
+      "0": TileType.SPACE,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "1605": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1606": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1607": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1608": {
+      "0": TileType.GRASS,
+      "1": TileType.BOMB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1609": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1610": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1611": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1612": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1613": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1614": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1615": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1616": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1617": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1618": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1619": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "1620": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1621": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1622": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1623": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1624": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1625": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1626": {
+      "0": TileType.ROCKET,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1627": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1628": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1629": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1630": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1631": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1632": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1633": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "1634": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1635": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1636": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.CHESTB,
+      "5": TileType.STONE
+    },
+    "1637": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1638": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1639": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1640": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1641": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1642": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1643": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1644": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1645": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1646": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1647": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1648": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1649": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1650": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1651": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1652": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1653": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1654": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1655": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1656": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1657": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1658": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1659": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1660": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1661": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.ROCKET
+    },
+    "1662": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1663": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1664": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.CHESTR,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1665": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1666": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1667": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1668": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1669": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1670": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1671": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1672": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1673": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1674": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.BOMB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1675": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1676": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1677": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1678": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1679": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "1680": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1681": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1682": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1683": {
+      "0": TileType.ROCKET,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1684": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1685": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1686": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1687": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1688": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1689": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "1690": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1691": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1692": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.CHESTB
+    },
+    "1693": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1694": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "1695": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1696": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1697": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1698": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1699": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1700": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1701": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "1702": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1703": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1704": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1705": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1706": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1707": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.CHESTR,
+      "5": TileType.STONE
+    },
+    "1708": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1709": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1710": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1711": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "1712": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1713": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1714": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1715": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "1716": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1717": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1718": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1719": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1720": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1721": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1722": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1723": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1724": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1725": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1726": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.BOMB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1727": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1728": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1729": {
+      "0": TileType.SPACE,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1730": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1731": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.CHESTB,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "1732": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1733": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1734": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1735": {
+      "0": TileType.STARY,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1736": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1737": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1738": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1739": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1740": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1741": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1742": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1743": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "1744": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1745": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1746": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1747": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1748": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1749": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1750": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1751": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1752": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1753": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1754": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1755": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1756": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1757": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1758": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1759": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1760": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1761": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1762": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1763": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1764": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1765": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1766": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1767": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1768": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.BOMB,
+      "4": TileType.ROCKET,
+      "5": TileType.GRASS
+    },
+    "1769": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1770": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1771": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1772": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1773": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1774": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1775": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1776": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1777": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1778": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "1779": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1780": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1781": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1782": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1783": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1784": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1785": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1786": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1787": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1788": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.CHESTR,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1789": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1790": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1791": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1792": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1793": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1794": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1795": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1796": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1797": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1798": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1799": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1800": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1801": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1802": {
+      "0": TileType.GRASS,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1803": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1804": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1805": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1806": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1807": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1808": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1809": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1810": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1811": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1812": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.CHESTB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1813": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1814": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1815": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1816": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1817": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1818": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "1819": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1820": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1821": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "1822": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1823": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1824": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1825": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1826": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1827": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1828": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1829": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1830": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1831": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1832": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1833": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1834": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1835": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1836": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1837": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1838": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1839": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1840": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.ROCKET,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1841": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "1842": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.BOMB
+    },
+    "1843": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1844": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1845": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1846": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1847": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1848": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1849": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1850": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1851": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1852": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1853": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1854": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1855": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1856": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1857": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1858": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1859": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1860": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1861": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1862": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1863": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.ROCKET
+    },
+    "1864": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1865": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.BOMB,
+      "5": TileType.SPACE
+    },
+    "1866": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1867": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1868": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1869": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1870": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1871": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "1872": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1873": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1874": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1875": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "1876": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1877": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.CHESTB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1878": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1879": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1880": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1881": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1882": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1883": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1884": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "1885": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1886": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1887": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1888": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1889": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1890": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1891": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1892": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1893": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1894": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1895": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1896": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1897": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1898": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.CHESTR,
+      "5": TileType.GRASS
+    },
+    "1899": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1900": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1901": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1902": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1903": {
+      "0": TileType.CHESTB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "1904": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.ROCKET,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1905": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1906": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1907": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1908": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1909": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1910": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1911": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1912": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1913": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1914": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "1915": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1916": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1917": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "1918": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1919": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STARB,
+      "5": TileType.BOMB
+    },
+    "1920": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1921": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1922": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1923": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1924": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1925": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1926": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.CHESTR,
+      "5": TileType.GRASS
+    },
+    "1927": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1928": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1929": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "1930": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1931": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1932": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1933": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1934": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1935": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1936": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1937": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1938": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1939": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STARY
+    },
+    "1940": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "1941": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1942": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1943": {
+      "0": TileType.ROCKET,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "1944": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1945": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1946": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1947": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1948": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "1949": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1950": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STARB
+    },
+    "1951": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1952": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1953": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1954": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1955": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "1956": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "1957": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARY
+    },
+    "1958": {
+      "0": TileType.ROCKET,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1959": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1960": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1961": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1962": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1963": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.CHESTB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1964": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1965": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "1966": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARY
+    },
+    "1967": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "1968": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.BOMB
+    },
+    "1969": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1970": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1971": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1972": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "1973": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1974": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1975": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1976": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1977": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1978": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1979": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "1980": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1981": {
+      "0": TileType.STARY,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "1982": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "1983": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1984": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1985": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1986": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1987": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1988": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1989": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1990": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "1991": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1992": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1993": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "1994": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "1995": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "1996": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "1997": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "1998": {
+      "0": TileType.SPACE,
+      "1": TileType.CHESTR,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "1999": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.GRASS
+    },
+    "2000": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2001": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2002": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2003": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "2004": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2005": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2006": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2007": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.CHESTR
+    },
+    "2008": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2009": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2010": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2011": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2012": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2013": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2014": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2015": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2016": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2017": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2018": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2019": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2020": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2021": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2022": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2023": {
+      "0": TileType.STONE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2024": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2025": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARY,
+      "5": TileType.STONE
+    },
+    "2026": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2027": {
+      "0": TileType.BOMB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2028": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2029": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "2030": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.SPACE
+    },
+    "2031": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2032": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2033": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STARY,
+      "5": TileType.STARB
+    },
+    "2034": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2035": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "2036": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "2037": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2038": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2039": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2040": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "2041": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2042": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2043": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2044": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2045": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2046": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2047": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.CHESTB
+    },
+    "2048": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2049": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2050": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.BOMB,
+      "5": TileType.GRASS
+    },
+    "2051": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2052": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2053": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2054": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2055": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2056": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2057": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.CHESTR,
+      "5": TileType.STONE
+    },
+    "2058": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2059": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.STONE
+    },
+    "2060": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2061": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2062": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2063": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2064": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2065": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2066": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "2067": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "2068": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2069": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.BOMB,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2070": {
+      "0": TileType.STARB,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2071": {
+      "0": TileType.SPACE,
+      "1": TileType.STARB,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "2072": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2073": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2074": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2075": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2076": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "2077": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2078": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2079": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "2080": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2081": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2082": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2083": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2084": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2085": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "2086": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.SPACE
+    },
+    "2087": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2088": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2089": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2090": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2091": {
+      "0": TileType.CHESTB,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2092": {
+      "0": TileType.ROCKET,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2093": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "2094": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2095": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2096": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2097": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2098": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2099": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "2100": {
+      "0": TileType.GRASS,
+      "1": TileType.STARY,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2101": {
+      "0": TileType.CHESTB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2102": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2103": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2104": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.STARY,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2105": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2106": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2107": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2108": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2109": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2110": {
+      "0": TileType.STARB,
+      "1": TileType.STARB,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2111": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2112": {
+      "0": TileType.STONE,
+      "1": TileType.BOMB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2113": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.CHESTR
+    },
+    "2114": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2115": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2116": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    },
+    "2117": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "2118": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2119": {
+      "0": TileType.GRASS,
+      "1": TileType.ROCKET,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2120": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2121": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.ROCKET,
+      "5": TileType.SPACE
+    },
+    "2122": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STARY
+    },
+    "2123": {
+      "0": TileType.STONE,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "2124": {
+      "0": TileType.STARY,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.SPACE
+    },
+    "2125": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2126": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2127": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.GRASS,
+      "5": TileType.ROCKET
+    },
+    "2128": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.STONE
+    },
+    "2129": {
+      "0": TileType.GRASS,
+      "1": TileType.SPACE,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2130": {
+      "0": TileType.GRASS,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2131": {
+      "0": TileType.STARY,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2132": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2133": {
+      "0": TileType.STONE,
+      "1": TileType.STARB,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2134": {
+      "0": TileType.SPACE,
+      "1": TileType.STONE,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.BOMB
+    },
+    "2135": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2136": {
+      "0": TileType.STARB,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "2137": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2138": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.SPACE,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2139": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2140": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STONE,
+      "4": TileType.GRASS,
+      "5": TileType.STARB
+    },
+    "2141": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2142": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.STONE
+    },
+    "2143": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2144": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STARY,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2145": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.SPACE
+    },
+    "2146": {
+      "0": TileType.STARB,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.SPACE,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2147": {
+      "0": TileType.SPACE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STONE,
+      "4": TileType.STONE,
+      "5": TileType.STARB
+    },
+    "2148": {
+      "0": TileType.GRASS,
+      "1": TileType.STONE,
+      "2": TileType.STARB,
+      "3": TileType.ROCKET,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2149": {
+      "0": TileType.STARY,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.SPACE,
+      "4": TileType.ROCKET,
+      "5": TileType.STARB
+    },
+    "2150": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.GRASS,
+      "3": TileType.STARB,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2151": {
+      "0": TileType.STARB,
+      "1": TileType.STONE,
+      "2": TileType.ROCKET,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.STONE
+    },
+    "2152": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2153": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.SPACE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.STONE
+    },
+    "2154": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STARB,
+      "4": TileType.STONE,
+      "5": TileType.GRASS
+    },
+    "2155": {
+      "0": TileType.STONE,
+      "1": TileType.SPACE,
+      "2": TileType.STONE,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2156": {
+      "0": TileType.SPACE,
+      "1": TileType.STARY,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.STARB,
+      "5": TileType.SPACE
+    },
+    "2157": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.STONE,
+      "3": TileType.GRASS,
+      "4": TileType.SPACE,
+      "5": TileType.GRASS
+    },
+    "2158": {
+      "0": TileType.SPACE,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.GRASS,
+      "5": TileType.GRASS
+    },
+    "2159": {
+      "0": TileType.STONE,
+      "1": TileType.GRASS,
+      "2": TileType.STARB,
+      "3": TileType.STONE,
+      "4": TileType.SPACE,
+      "5": TileType.STARB
+    },
+    "2160": {
+      "0": TileType.GRASS,
+      "1": TileType.GRASS,
+      "2": TileType.GRASS,
+      "3": TileType.GRASS,
+      "4": TileType.STARB,
+      "5": TileType.GRASS
+    }
+  }
