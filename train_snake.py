@@ -1,28 +1,35 @@
 # train_snake.py
 from stable_baselines3 import PPO
 from snake_env import SnakeEnv
-
-def train_snake(timesteps=10000, render=False):
+from sb3_contrib import MaskablePPO
+from sb3_contrib.common.maskable.utils import get_action_masks
+from sb3_contrib.common.wrappers import ActionMasker # 👈 Import the wrapper
+def train_snake(timesteps=2048, render=False):
     """Train Snake AI with PPO"""
 
     print("Training Snake with PPO")
     print(f"Total timesteps: {timesteps}")
     print("-" * 40)
-    render = True
+    # render = True
     # Create environment
     render_mode = "human" if render else None
     env = SnakeEnv(render_mode=render_mode)
+    def mask_fn(environment):
+        return environment._get_action_mask()
+    # 3. Wrap your environment so SB3 can officially read the masks
+    env = ActionMasker(env, mask_fn)
 
+   
     # Create PPO model
-    model = PPO(
+    model = MaskablePPO(
         # "MlpPolicy",
         "MultiInputPolicy",
         env,
         verbose=1,
-        learning_rate=0.0003,
-        n_steps=2048,
-        batch_size=64,
-        gamma=0.99,
+        # learning_rate=0.0003,
+        # n_steps=2048,
+        # batch_size=64,
+        # gamma=0.99,
     )
 
     # Train the model
@@ -36,7 +43,7 @@ def train_snake(timesteps=10000, render=False):
     env.close()
     return model
 
-def play_trained_model(model_path="snake_model", episodes=5):
+def play_trained_model(model_path="snake_model", episodes=1):
     """Watch the trained model play"""
 
     print(f"Loading model: {model_path}")
@@ -45,17 +52,14 @@ def play_trained_model(model_path="snake_model", episodes=5):
     env = SnakeEnv(render_mode="human")
 
     # Load model
-    model = PPO.load(model_path, env=env)
-
-    print(f"Watching trained agent play {episodes} episodes...")
-    print("Close the window to stop early")
+    model = MaskablePPO.load(model_path, env=env)
 
     scores = []
     for episode in range(episodes):
         obs, info = env.reset()
         done = False
 
-        print(f"Episode {episode + 1}:")
+        # print(f"Episode {episode + 1}:")
 
         while not done:
             # Get action from model
@@ -63,7 +67,7 @@ def play_trained_model(model_path="snake_model", episodes=5):
 
             # Take step
             obs, reward, terminated, truncated, info = env.step(action)
-            print(action)
+            # print(action)
             # print(obs, reward, terminated, truncated, info)
             # done = terminated or truncated
             # print(terminated, truncated, obs  )

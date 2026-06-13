@@ -437,7 +437,7 @@ class SnakeGame:
             self.reward += 100
             self.checkHidden()
             self.checkAdvance()
-            self.render()
+            # self.render()
         
       # if any tile is A or (chest and visible), advance the board. otherwise
     #   any(self.board.get(tile2) == TileType.SPACE.symbol for tile2 in self.getAdjacentTiles(tile))

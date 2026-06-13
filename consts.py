@@ -47,7 +47,7 @@ class TileType(Enum):
         match tiletype:
             case TileType.ROCKET:
                 game_state.rockets += 1
-                print(game_state.rockets)
+                # print(game_state.rockets)
                 
             case TileType.BOMB:
                 game_state.bombs += 1

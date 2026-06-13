@@ -87,6 +87,29 @@ class SnakeEnv(gym.Env):
             "action_mask": mask
         }
 
+    def _get_action_mask(self):
+        # Initialize a flat mask of all zeros (all moves illegal by default)
+        mask = np.zeros(self.width*self.height, dtype=np.int8)
+        
+       
+        # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
+        available_moves = self.game.getAvailable()
+        
+        for coord_str, action_type in available_moves:
+            # 1. Convert coordinate string "x,y" into grid integers
+            x, y = map(int, coord_str.split(','))
+            
+            # y is 0-5, width is 8, x
+            x -= self.game.counter
+            # 2. Map the 2D grid coordinates + action type into a single unique 1D flat index
+            # action_type mapping: 1 -> index 0, 2 -> index 1, 3 -> index 2
+            # action_idx = (y * self.width + x) * 3 + (action_type - 1)
+            action_idx = (y * self.game.width + x) + (action_type - 1)
+            # 3. Mark this specific action index as valid!
+            mask[action_idx] = 1
+        
+        return mask
+
     def reset(self, seed=None, options=None):
         """Reset the environment"""
         super().reset(seed=seed)
