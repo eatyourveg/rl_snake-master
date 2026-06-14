@@ -4,7 +4,14 @@ from snake_env import SnakeEnv
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.utils import get_action_masks
 from sb3_contrib.common.wrappers import ActionMasker # 👈 Import the wrapper
-def train_snake(timesteps=2048, render=False):
+import time
+
+def mask_fn(environment):
+        return environment._get_action_mask()
+    
+
+
+def train_snake(timesteps=100000, render=False):
     """Train Snake AI with PPO"""
 
     print("Training Snake with PPO")
@@ -14,11 +21,10 @@ def train_snake(timesteps=2048, render=False):
     # Create environment
     render_mode = "human" if render else None
     env = SnakeEnv(render_mode=render_mode)
-    def mask_fn(environment):
-        return environment._get_action_mask()
+
     # 3. Wrap your environment so SB3 can officially read the masks
     env = ActionMasker(env, mask_fn)
-
+    
    
     # Create PPO model
     model = MaskablePPO(
@@ -50,7 +56,7 @@ def play_trained_model(model_path="snake_model", episodes=1):
 
     # Create environment with rendering
     env = SnakeEnv(render_mode="human")
-
+    env = ActionMasker(env, mask_fn)
     # Load model
     model = MaskablePPO.load(model_path, env=env)
 
@@ -63,14 +69,20 @@ def play_trained_model(model_path="snake_model", episodes=1):
 
         while not done:
             # Get action from model
-            action, _ = model.predict(obs, deterministic=True)
+            current_mask = env.action_masks()
+            action, _ = model.predict(obs, 
+                                      action_masks=current_mask,
+                                      deterministic=True)
 
             # Take step
+            
+            # print(action)
             obs, reward, terminated, truncated, info = env.step(action)
             # print(action)
             # print(obs, reward, terminated, truncated, info)
-            # done = terminated or truncated
+            done = terminated or truncated
             # print(terminated, truncated, obs  )
+            # time.sleep(0.2)
 
         score = info.get('score', 0)
         scores.append(score)

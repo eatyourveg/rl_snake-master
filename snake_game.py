@@ -31,7 +31,7 @@ class Action(Enum):
                 return action
         return None
 
-debug = False
+
 
 
 class SnakeGame:
@@ -56,11 +56,18 @@ class SnakeGame:
         self.dark_overlay.fill((0, 0, 0, 160)) # Adjust 160 up or down for darkness preference
 
         self.coords_list = self.jsonToMapDeep()
+        
         for values in hiddenTiles2025MAY:
             self.coords_list[values] = TileType.HIDDEN
- 
+
+        # Keeps only the first 6,000 
+        self.ceiling = 600
+        self.finalScore = 0
+        self.coords_list = {k: self.coords_list[k] for k in list(self.coords_list.keys())[:self.ceiling]}
+        self.action_keys = list(self.coords_list.keys())
         self.cache = {}
         self.reset()
+
 
     def reset(self):
         """Reset the game to initial state"""
@@ -68,6 +75,7 @@ class SnakeGame:
         self.food = [0,0]
         self.board = self.coords_list.copy()
         self.next = 0
+        
         
         
     #           this.counter = 0
@@ -106,51 +114,29 @@ class SnakeGame:
 
 
 
-    
-
-    def _update_direction(self, action):
-        """Update direction based on action"""
-        if action == 0:  # Continue straight
-            return
-
-        directions = [Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT]
-        current_idx = directions.index(self.direction)
-
-        if action == 1:  # Turn right
-            self.direction = directions[(current_idx + 1) % 4]
-        elif action == 2:  # Turn left
-            self.direction = directions[(current_idx - 1) % 4]
-
-
     def _get_observation(self):
-       
-        # Ensure your board is a clean, matching numpy array
-        board_matrix = self.get_numeric_board_array() 
-        
-        # Bundle bombs and rockets into a tiny 1D inventory array
-        inventory_array = np.array([self.bombs, self.rockets], dtype=np.int8)
         
         return {
-            "board": board_matrix,
-            "action_mask": self._get_action_mask(),
-            "inventory": inventory_array
+            "board": self.get_numeric_board_array(),
+            # "action_mask": mask or self._get_action_mask(),
+            "inventory": np.array([self.bombs, self.rockets], dtype=np.int8)
         }
     
 
     def get_numeric_board_array(self):
         # 1. Initialize a blank 2D grid matching your board dimensions
         # Shape is (rows, columns) -> (height, width)
-        grid = np.zeros((self.height, self.width), dtype=np.int8)
+        grid = np.zeros((self.height, int(len(self.board)/self.height)), dtype=np.int8)
         
         # 2. Grab your raw board state dictionary
-        current_board = self.getCurrentBoard() # Returns {"0,0": "H", "1,0": "A", ...}
+        # current_board = self.getCurrentBoard() # Returns {"0,0": "H", "1,0": "A", ...}
         
         # 3. Loop through and map string symbols to numeric values for the AI
-        for key, val in current_board.items():
+        for key, val in self.board.items():
             # 5,3 -> (15, 3)
             x, y = map(int, key.split(','))
             # subtract x to get relative coord to currentboard
-            x -= self.counter
+            # x -= self.counter
             # Map your custom Enum symbols or values to clean integers/floats
 
             grid[y, x] = TILE_TYPE_MEMBERS.index(val)
@@ -158,30 +144,7 @@ class SnakeGame:
                 
         return grid
 
-    def _is_collision(self, position, direction):
-        """Check if moving in direction from position would cause collision"""
-        x, y = position
-
-        # Calculate new position
-        if direction == Direction.UP:
-            new_pos = (x, y - 1)
-        elif direction == Direction.DOWN:
-            new_pos = (x, y + 1)
-        elif direction == Direction.LEFT:
-            new_pos = (x - 1, y)
-        elif direction == Direction.RIGHT:
-            new_pos = (x + 1, y)
-
-        # Check wall collision
-        if (new_pos[0] < 0 or new_pos[0] >= self.width or
-            new_pos[1] < 0 or new_pos[1] >= self.height):
-            return True
-
-        # Check body collision
-        if new_pos in self.snake:
-            return True
-
-        return False
+    
 
     def render(self, mode='human'):
         """Render the game"""
@@ -271,7 +234,8 @@ class SnakeGame:
         # print(f"cell: ({coord}) {currVal}")
         
         
-        self.handleMove([coord,Action.from_button(e.button)])
+        self.handleMove([coord,e.button])
+        
         # this.draw()
     def checkHidden(self):
       # get all hidden tiles in the current board, and if any are adjacent to a revealed tile, reveal them
@@ -298,7 +262,7 @@ class SnakeGame:
         return tilesVisibleNonspace +tilesRocket + tilesBomb
     
     def isTileVisible(self, tile):
-        return any(TileType.SPACE == self.board[tile2] for tile2 in self.getAdjacentTiles(tile))
+        return TileType.SPACE == self.board[tile] or any(TileType.SPACE == self.board[tile2] for tile2 in self.getAdjacentTiles(tile))
     
     def isMoveVisible(self,tile):
       # if the tile is already revealed, it's visible
@@ -353,9 +317,9 @@ class SnakeGame:
 
 
     def handleMove(self, move):
+        
         terminated = False
         self.reward = -10
-        if self.counter > 100: terminated = True
         tile = move[0]
         val = self.board[tile]
         action = Action.from_button(move[1])
@@ -384,12 +348,15 @@ class SnakeGame:
                 self.bombs+=1
                 self.board[tile] = TileType.CHESTOPEN
                 self.score -= 1
+                self.reward +=20
             elif val == TileType.CHESTR:
                 self.rockets+=1
                 self.board[tile] = TileType.CHESTOPEN
                 self.score -= 1
+                self.reward += 20
             else:
                 self.setTile(tile)
+                
             
             
         
@@ -415,8 +382,14 @@ class SnakeGame:
         self.score += 1
         self.checkHidden()
         self.checkAdvance()
-      
-        return self._get_observation(), self.reward, terminated, False, {"score": self.score}
+
+        if self.counter>=90:
+            self.finalScore = self.score
+            self.reset()
+            
+            terminated = True
+           
+        return self._get_observation(), self.reward, terminated, False, {"score": self.finalScore}
     
     
     def  getColumn(self,colIndex=None):
@@ -441,7 +414,8 @@ class SnakeGame:
         
       # if any tile is A or (chest and visible), advance the board. otherwise
     #   any(self.board.get(tile2) == TileType.SPACE.symbol for tile2 in self.getAdjacentTiles(tile))
-        if any(TileType.SPACE == value or TileType.isChest(value) and self.isTileVisible(key) for key, value in lastColArr):
+        if any(TileType.SPACE == value or (TileType.isChest(value) and self.isTileVisible(key)) for key, value in lastColArr):
+           
             advance()        
         elif any(value == TileType.HIDDEN for key, value in lastColArr):
             hidden = [key for key, val in lastColArr if val == TileType.HIDDEN]
@@ -485,7 +459,7 @@ class SnakeGame:
     
     def _get_action_mask(self):
         # Initialize a flat mask of all zeros (all moves illegal by default)
-        mask = np.zeros(self.width*self.height, dtype=np.int8)
+        mask = np.zeros(len(self.board), dtype=np.int8)
         
         
         # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
@@ -493,16 +467,21 @@ class SnakeGame:
         
         for coord_str, action_type in available_moves:
             # 1. Convert coordinate string "x,y" into grid integers
-            x, y = map(int, coord_str.split(','))
-            
+            # x, y = map(int, coord_str.split(','))
+            # idx = self.board.index(coord_str)
             # y is 0-5, width is 8, x
-            x -= self.counter
+            # x -= self.counter
             # 2. Map the 2D grid coordinates + action type into a single unique 1D flat index
             # action_type mapping: 1 -> index 0, 2 -> index 1, 3 -> index 2
             # action_idx = (y * self.width + x) * 3 + (action_type - 1)
-            action_idx = (y * self.width + x) + (action_type - 1)
+            # action_idx = y * self.width + x
             # 3. Mark this specific action index as valid!
-            mask[action_idx] = 1
+            # mask[idx] = 1
+
+
+            if coord_str in self.coords_list:
+                idx = self.action_keys.index(coord_str)
+                mask[idx] = 1
         
         return mask
 
