@@ -35,10 +35,10 @@ class Action(Enum):
 
 
 class SnakeGame:
-    def __init__(self, width=8, height=6, cell_size=80):
+    def __init__(self):
         self.width = 8
         self.height = 6
-        self.cell_size = cell_size
+        self.cell_size = 80
 
         # Colors
         self.BLACK = (0, 0, 0)
@@ -64,6 +64,7 @@ class SnakeGame:
         self.ceiling = 600
         self.finalScore = 0
         self.coords_list = {k: self.coords_list[k] for k in list(self.coords_list.keys())[:self.ceiling]}
+        # to get indexed version of dict
         self.action_keys = list(self.coords_list.keys())
         self.cache = {}
         self.reset()
@@ -71,8 +72,8 @@ class SnakeGame:
 
     def reset(self):
         """Reset the game to initial state"""
-        self.snake = [(self.width // 2, self.height // 2)]
-        self.food = [0,0]
+        
+       
         self.board = self.coords_list.copy()
         self.next = 0
         
@@ -85,12 +86,12 @@ class SnakeGame:
 
     #   this.map = jsonToMapDeep(coords);
 
-        self.direction = Direction.RIGHT
+       
         self.counter = 0
         self.score = 0
         self.rockets = 0
         self.bombs = 0
-        self.game_over = False
+   
 
         return self._get_observation()
     
@@ -180,27 +181,7 @@ class SnakeGame:
             score_text = self.font.render(f"Score: {self.score}, Rockets:{self.rockets}, Bombs:{self.bombs}", True, self.WHITE)
             self.screen.blit(score_text, (10, ui_y))
 
-            # Game over overlay
-            if self.game_over:
-                overlay = pygame.Surface(self.screen.get_size())
-                overlay.set_alpha(128)
-                overlay.fill(self.BLACK)
-                self.screen.blit(overlay, (0, 0))
 
-                game_over_text = self.font.render("GAME OVER", True, self.WHITE)
-                score_text = self.font.render(f"Final Score: {self.score}", True, self.WHITE)
-                restart_text = self.font.render("Press SPACE to restart or ESC to quit", True, self.WHITE)
-
-                window_width = self.width * self.cell_size
-                window_height = self.height * self.cell_size + 50
-
-                game_over_rect = game_over_text.get_rect(center=(window_width // 2, window_height // 2 - 40))
-                score_rect = score_text.get_rect(center=(window_width // 2, window_height // 2))
-                restart_rect = restart_text.get_rect(center=(window_width // 2, window_height // 2 + 40))
-
-                self.screen.blit(game_over_text, game_over_rect)
-                self.screen.blit(score_text, score_rect)
-                self.screen.blit(restart_text, restart_rect)
 
             pygame.display.flip()
             if self.clock:

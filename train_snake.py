@@ -111,8 +111,8 @@ def main():
     elif sys.argv[1] == "play":
         # Play trained model
         model_path = sys.argv[2] if len(sys.argv) > 2 else "snake_model"
-        episodes = int(sys.argv[3]) if len(sys.argv) > 3 else 5
-        play_trained_model(model_path, episodes)
+        # episodes = int(sys.argv[3]) if len(sys.argv) > 3 else 5
+        play_trained_model(model_path)
     else:
         print("Usage:")
         print("  python train_snake.py                    # Train with defaults")
