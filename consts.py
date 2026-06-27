@@ -47,13 +47,15 @@ class TileType(Enum):
         match tiletype:
             case TileType.ROCKET:
                 game_state.rockets += 1
+                game_state.reward += 3
                 # print(game_state.rockets)
                 
             case TileType.BOMB:
                 game_state.bombs += 1
+                game_state.reward += 3
                 
-            # case TileType.STARB:
-            #     game_state
+            case TileType.STARY:
+                game_state.reward += 0.2
 TILE_TYPE_MEMBERS = list(TileType)
 
 hiddenTiles2025MAY =[

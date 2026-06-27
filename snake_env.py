@@ -7,9 +7,9 @@ from snake_game import SnakeGame
 class SnakeEnv(gym.Env):
     """Gymnasium environment wrapper for Snake game"""
 
-    metadata = {"render_modes": ["human"], "render_fps": 30}
+    metadata = {"render_modes": True, "render_fps": 30}
 
-    def __init__(self, render_mode=None):
+    def __init__(self, render_mode=False):
         super().__init__()
         self.render_mode = render_mode
         # Initialize the game
@@ -17,57 +17,65 @@ class SnakeEnv(gym.Env):
         
         # Define action and observation space
         # Actions: every tile is an action, multiply by 3 types of actions
-        self.max_actions = len(self.game.board)
+        self.max_actions = len(self.game.coords_list) * 3
         # required for ppo
         self.action_space = spaces.Discrete(self.max_actions)
 
+
         self.observation_space = spaces.Dict({
-            "board": spaces.Box(low=0, high=10, shape=(self.game.height, int(self.max_actions/self.game.height)), dtype=np.int8),
-            # "action_mask": spaces.Box(low=0, high=1, shape=(self.max_actions,), dtype=np.int8),
+            "board": spaces.Box(low=0, high=10, shape=(self.game.height, self.game.length), dtype=np.int8),
             # Inventory counts for special tools
-            "inventory": spaces.Box(low=0, high=99, shape=(2,), dtype=np.int8) # [bombs, rockets]
+            # "inventory": spaces.Box(low=0, high=99, shape=(2,), dtype=np.int8) # [bombs, rockets]
+            "rockets": spaces.Box(low=0, high=10, shape=(1,), dtype=np.int8), 
+            "bombs": spaces.Box(low=0, high=10, shape=(1,), dtype=np.int8)
         })
 
         # Initialize pygame if render mode is human
-        if self.render_mode == "human":
+        if self.render_mode:
             pygame.init()
 
   
 
     def step(self, action_idx):
-        if self.render_mode == "human":
+        if self.render_mode:
             self.render()
         # Optional: Guard check during training/debugging
-        mask = self.game._get_action_mask()
-        if mask[action_idx] == 0:
-            # The agent chose an illegal move! Punish it or handle gracefully
-            return self.game._get_observation(), -10, False, False, {"error": "Illegal Move"}
+        # mask = self.game._get_action_mask()
+        # if mask[action_idx] == 0:
+        #     print("hello")
+        #     # The agent chose an illegal move! Punish it or handle gracefully
+        #     return self.game._get_observation(), -10, False, False, {"error": "Illegal Move"}
+        
+        action = 1
+        length = len(self.game.board)
+        
+        if action_idx >= length:
+            mod = int(action_idx // length)
+            action += mod
+            action_idx -= length*mod        
 
-        return  self.game.handleMove([self.game.action_keys[action_idx], 1])
+
+        return  self.game.handleMove([self.game.action_keys[action_idx], action])
         
 
     def _get_action_mask(self):
+        return self.game._get_action_mask()
         # Initialize a flat mask of all zeros (all moves illegal by default)
-        mask = np.zeros(len(self.game.board), dtype=np.int8)
+        mask = np.zeros(len(self.game.board)*2, dtype=np.int8)
         
         # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
         available_moves = self.game.getAvailable()
         
         for coord_str, action_type in available_moves:
-            # 1. Convert coordinate string "x,y" into grid integers
-            # x, y = map(int, coord_str.split(','))
-            # idx = self.game.board.index(coord_str)
-            # y is 0-5, width is 8, x
-            # x -= self.counter
-            # 2. Map the 2D grid coordinates + action type into a single unique 1D flat index
-            # action_type mapping: 1 -> index 0, 2 -> index 1, 3 -> index 2
-            # action_idx = (y * self.width + x) * 3 + (action_type - 1)
-            # action_idx = y * self.width + x
-            # 3. Mark this specific action index as valid!
-            # mask[idx] = 1
-       
+
+            # get index of coord
             idx = self.game.action_keys.index(coord_str)
+            # if rocket, add len of game board
+            if action_type == 3: 
+                idx += len(self.game.board)
+            
             mask[idx] = 1
+            
         
         return mask
 
@@ -83,7 +91,7 @@ class SnakeEnv(gym.Env):
         # observation = self.game.reset()
         info = {"score": self.game.score}
 
-        if self.render_mode == "human":
+        if self.render_mode:
             self.render()
 
         return observation, info
@@ -92,14 +100,14 @@ class SnakeEnv(gym.Env):
 
     def render(self):
         """Render the environment"""
-        if self.render_mode == "human":
+        if self.render_mode:
             # Handle pygame events to prevent window from becoming unresponsive
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.close()
                     return
 
-            self.game.render(mode="human")
+            self.game.render(mode=True)
 
     def close(self):
         """Close the environment"""

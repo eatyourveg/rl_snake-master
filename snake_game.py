@@ -6,8 +6,18 @@ import itertools
 from enum import Enum
 from consts import *
 
-
-
+# 125 good spot
+start = {
+    0:{
+        "bombs": 0,
+        "rockets":0,
+        "beg":0,
+        "end":69,
+        "tiles":[]
+        
+    }
+}
+start_idx = 0
 
 class Direction(Enum):
     UP = 0
@@ -39,7 +49,7 @@ class SnakeGame:
         self.width = 8
         self.height = 6
         self.cell_size = 80
-
+        
         # Colors
         self.BLACK = (0, 0, 0)
         self.WHITE = (255, 255, 255)
@@ -55,15 +65,22 @@ class SnakeGame:
         self.dark_overlay = pygame.Surface((self.cell_size, self.cell_size), pygame.SRCALPHA)
         self.dark_overlay.fill((0, 0, 0, 160)) # Adjust 160 up or down for darkness preference
 
-        self.coords_list = self.jsonToMapDeep()
+        self.coords_list = {}
+        # convert coord json to flat map
+        for col, rows in coords.items():
+            for row, value in rows.items():
+                self.coords_list[self.getCoord(col,row)] = value
+        # print(self.coords_list)
         
         for values in hiddenTiles2025MAY:
             self.coords_list[values] = TileType.HIDDEN
 
         # Keeps only the first 6,000 
-        self.ceiling = 600
-        self.finalScore = 0
-        self.coords_list = {k: self.coords_list[k] for k in list(self.coords_list.keys())[:self.ceiling]}
+        self.beg = start[start_idx]["beg"]
+        self.end = start[start_idx]["end"] 
+        self.ceiling = self.end + 10
+        self.length = self.ceiling-self.beg
+        self.coords_list = {k: self.coords_list[k] for k in list(self.coords_list.keys())[self.beg*self.height:self.length*self.height]}
         # to get indexed version of dict
         self.action_keys = list(self.coords_list.keys())
         self.cache = {}
@@ -76,21 +93,11 @@ class SnakeGame:
        
         self.board = self.coords_list.copy()
         self.next = 0
-        
-        
-        
-    #           this.counter = 0
-    #   this.moves = 0
-    #   this.next = 0
-    #   this.stats = { Bombs: 0, Rockets: 0, StarBlue: 0, StarYellow: 0 }
-
-    #   this.map = jsonToMapDeep(coords);
-
-       
         self.counter = 0
         self.score = 0
-        self.rockets = 0
-        self.bombs = 0
+        self.rockets = start[start_idx]["rockets"]
+        self.bombs = start[start_idx]["bombs"]
+        self.totalReward = 0
    
 
         return self._get_observation()
@@ -100,12 +107,7 @@ class SnakeGame:
             # load image and scale to cell size, store in cache
             if tile.image: self.cache[tile] = pygame.transform.scale(pygame.image.load(tile.image).convert_alpha(),(self.cell_size, self.cell_size))
 
-    def jsonToMapDeep(self):
-        flatMap = {}
-        for col, rows in coords.items():
-            for row, value in rows.items():
-                flatMap[self.getCoord(col,row)] = value
-        return flatMap         
+       
     
     def getCurrentBoard(self):
         """slice the board dict to only include the current visible area based on counter"""
@@ -117,39 +119,33 @@ class SnakeGame:
 
     def _get_observation(self):
         
+        def get_numeric_board_array(self):
+            # 1. Initialize a blank 2D grid matching your board dimensions
+            # Shape is (rows, columns) -> (height, width)
+            grid = np.zeros((self.height, self.length), dtype=np.int8)
+    
+            # 3. Loop through and map string symbols to numeric values for the AI
+            for key, val in self.board.items():
+                # 5,3 -> (15, 3)
+                x, y = map(int, key.split(','))
+
+                # Map your custom Enum symbols or values to clean integers/floats
+                grid[y, x] = TILE_TYPE_MEMBERS.index(val)
+    
+                    
+            return grid
+
         return {
-            "board": self.get_numeric_board_array(),
+            "board": get_numeric_board_array(self),
             # "action_mask": mask or self._get_action_mask(),
-            "inventory": np.array([self.bombs, self.rockets], dtype=np.int8)
+            # "inventory": np.array([self.bombs, self.rockets], dtype=np.int8)
+            "rockets": np.array([self.rockets], dtype=np.int8),
+            "bombs": np.array([self.bombs], dtype=np.int8)
         }
     
-
-    def get_numeric_board_array(self):
-        # 1. Initialize a blank 2D grid matching your board dimensions
-        # Shape is (rows, columns) -> (height, width)
-        grid = np.zeros((self.height, int(len(self.board)/self.height)), dtype=np.int8)
-        
-        # 2. Grab your raw board state dictionary
-        # current_board = self.getCurrentBoard() # Returns {"0,0": "H", "1,0": "A", ...}
-        
-        # 3. Loop through and map string symbols to numeric values for the AI
-        for key, val in self.board.items():
-            # 5,3 -> (15, 3)
-            x, y = map(int, key.split(','))
-            # subtract x to get relative coord to currentboard
-            # x -= self.counter
-            # Map your custom Enum symbols or values to clean integers/floats
-
-            grid[y, x] = TILE_TYPE_MEMBERS.index(val)
- 
-                
-        return grid
-
-    
-
-    def render(self, mode='human'):
+    def render(self, mode=True):
         """Render the game"""
-        if mode == 'human':
+        if mode:
             if self.screen is None:
                 pygame.init()
                 window_width = self.width * self.cell_size
@@ -214,8 +210,8 @@ class SnakeGame:
         # Object.entries(MOUSE_BUTTONS).find(([key,value]) => value==e.button)[0]
         # print(f"cell: ({coord}) {currVal}")
         
-        
-        self.handleMove([coord,e.button])
+        obs, reward, terminated, truncated, info  = self.handleMove([coord,e.button])
+        print(info)
         
         # this.draw()
     def checkHidden(self):
@@ -235,10 +231,10 @@ class SnakeGame:
         tilesRocket = []
         tilesBomb = []
  
-        # for key, val in current:
-        #     if val == TileType.SPACE:
-        #         if self.rockets > 0 : tilesRocket.append([key, 2])
-        #         if self.bombs > 0 :tilesBomb.append([key, 3])
+        for key, val in current:
+            if val == TileType.SPACE:
+                if self.rockets > 0 : tilesRocket.append([key, 3])
+                if self.bombs > 0 :tilesBomb.append([key, 2])
         # return flat array
         return tilesVisibleNonspace +tilesRocket + tilesBomb
     
@@ -300,42 +296,48 @@ class SnakeGame:
     def handleMove(self, move):
         
         terminated = False
-        self.reward = -10
-        tile = move[0]
-        val = self.board[tile]
-        action = Action.from_button(move[1])
-        # val = TileType.from_symbol(self.board[tile])
-        if val in ( TileType.CHESTOPEN, TileType.HIDDEN )or not self.isMoveVisible(tile): return
+        
+        tile, button = move
+        tileValue = self.board[tile]
+        action = Action.from_button(button)
+
+        # cant click opened chests or hidden tiles
+        if tileValue in ( TileType.CHESTOPEN, TileType.HIDDEN ) or not self.isMoveVisible(tile): return
+        self.reward = -1
         if action == Action.ROCKET:
             #  can only rocket on space tile
-            if val != TileType.SPACE or self.rockets <= 0: return
+            if tileValue != TileType.SPACE or self.rockets <= 0: return
+            # self.reward += 0.5
             self.rockets -= 1
             column, row = self.splitCoord(tile)
             # set row to spaces
             for i in range(self.width):
+                # ignore actiontile
                 if self.counter + i == column:
                     continue
                 self.setTile(self.getCoord(self.counter + i, row))
         elif action == Action.DIG:
-        # // do nothing if tile is revealed
-            if val == TileType.SPACE: return
-            elif val == TileType.STONE: 
-                self.score += 1
-                self.reward -= 10
+            # invalid move
+            if tileValue == TileType.SPACE: return
+            
+            
+            if tileValue == TileType.STONE: 
+                self.score += 2
+                self.reward -= 3
                 self.setTile(tile)
             # note clicking this chest doesnt add shovel
             # returning avoids score add
-            elif val == TileType.CHESTB:
+            elif tileValue == TileType.CHESTB:
                 self.bombs+=1
                 self.board[tile] = TileType.CHESTOPEN
-                self.score -= 1
-                self.reward +=20
-            elif val == TileType.CHESTR:
+                self.reward += 5
+            elif tileValue == TileType.CHESTR:
                 self.rockets+=1
                 self.board[tile] = TileType.CHESTOPEN
-                self.score -= 1
-                self.reward += 20
+                self.reward += 5
             else:
+                # score only increases when dig and not chest
+                self.score += 1
                 self.setTile(tile)
                 
             
@@ -344,7 +346,8 @@ class SnakeGame:
         
         elif action == Action.BOMB:
             #  can only bomb on space tile
-            if val != TileType.SPACE or self.bombs <=0: return
+            if tileValue != TileType.SPACE or self.bombs <=0: return
+            # self.reward += 0.5
             self.bombs -= 1
             arr = set()
             # get adjacent tiles, then get their adjacent tiles
@@ -357,20 +360,25 @@ class SnakeGame:
             
             for coord in arr:
                 self.setTile(coord)
-
-          
-        self.lastMove = tile
-        self.score += 1
+        
         self.checkHidden()
         self.checkAdvance()
 
-        if self.counter>=90:
-            self.finalScore = self.score
+        
+        # finalScore = self.score
+
+        if self.counter>=self.end:
+            self.reward += self.length*2 - self.score*2  + self.rockets * 5 + self.bombs * 5
+            self.totalReward += self.reward
+            info = {"score": self.score,"reward":self.reward, "move":move,"totalReward":self.totalReward, "bombs":self.bombs,"rockets":self.rockets, "eff":self.length/self.score}
             self.reset()
             
             terminated = True
-           
-        return self._get_observation(), self.reward, terminated, False, {"score": self.finalScore}
+            
+            return self._get_observation(), self.reward, terminated, False, info
+        self.totalReward += self.reward
+        info = {"score": self.score,"reward":self.reward, "move":move, "totalReward":self.totalReward , "bombs":self.bombs,"rockets":self.rockets}
+        return self._get_observation(), self.reward, False, False, info
     
     
     def  getColumn(self,colIndex=None):
@@ -388,7 +396,7 @@ class SnakeGame:
             # print(f'advance:{self.counter}')
             self.counter += 1
             # reveal any hidden tiles in the new column
-            self.reward += 100
+            self.reward += 1
             self.checkHidden()
             self.checkAdvance()
             # self.render()
@@ -417,8 +425,8 @@ class SnakeGame:
                 
     def nextMove(self): 
       
-      self.handleMove(nextMoves[self.next])
-      
+      obs, reward, terminated, truncated, info  = self.handleMove(nextMoves[self.next])
+      print(info)
       self.render()
     #   print(f'Next: {nextMoves[self.next]}. Next move: {nextMoves[self.next+1]}')
       self.next += 1
@@ -440,29 +448,24 @@ class SnakeGame:
     
     def _get_action_mask(self):
         # Initialize a flat mask of all zeros (all moves illegal by default)
-        mask = np.zeros(len(self.board), dtype=np.int8)
+        mask = np.zeros(len(self.board)*3, dtype=np.int8)
         
         
         # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
         available_moves = self.getAvailable()
         
         for coord_str, action_type in available_moves:
-            # 1. Convert coordinate string "x,y" into grid integers
-            # x, y = map(int, coord_str.split(','))
-            # idx = self.board.index(coord_str)
-            # y is 0-5, width is 8, x
-            # x -= self.counter
-            # 2. Map the 2D grid coordinates + action type into a single unique 1D flat index
-            # action_type mapping: 1 -> index 0, 2 -> index 1, 3 -> index 2
-            # action_idx = (y * self.width + x) * 3 + (action_type - 1)
-            # action_idx = y * self.width + x
-            # 3. Mark this specific action index as valid!
-            # mask[idx] = 1
-
-
+        
             if coord_str in self.coords_list:
                 idx = self.action_keys.index(coord_str)
+                if action_type == 3: 
+                    idx += len(self.board)*2
+                elif action_type == 2:
+                    idx += len(self.board)
+            
+            
                 mask[idx] = 1
+
         
         return mask
 
