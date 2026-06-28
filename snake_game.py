@@ -1,10 +1,27 @@
-import json
+
 import pygame
 import numpy as np
-import random
+
 import itertools
 from enum import Enum
 from consts import *
+
+import inspect
+
+def qprint(*args, **kwargs):
+    # Get the frame of the code that called this function
+    frame = inspect.currentframe().f_back
+    line_number = frame.f_lineno
+    file_name = frame.f_code.co_filename
+    
+    # Extract just the base filename (e.g., 'snake_game.py' instead of the full path)
+    short_file = file_name.split('\\')[-1].split('/')[-1]
+    
+    # Print the line details before your actual message
+    print(f"[{short_file}:{line_number}]", *args, **kwargs)
+
+
+
 
 # 125 good spot
 start = {
@@ -12,12 +29,25 @@ start = {
         "bombs": 0,
         "rockets":0,
         "beg":0,
-        "end":69,
+        # "end":69,
+        "end":97,
         "tiles":[]
         
+    },
+    1:{
+        "bombs": 0,
+        "rockets":1,
+        "beg":97,
+        
+        # "end":198,
+        "end":206,
+        "tiles":["97,5"],
+        "next":["102,0",1],
+        
     }
+
 }
-start_idx = 0
+start_idx = 1
 
 class Direction(Enum):
     UP = 0
@@ -67,22 +97,29 @@ class SnakeGame:
 
         self.coords_list = {}
         # convert coord json to flat map
-        for col, rows in coords.items():
+        for col, rows in coords1.items():
             for row, value in rows.items():
                 self.coords_list[self.getCoord(col,row)] = value
         # print(self.coords_list)
         
-        for values in hiddenTiles2025MAY:
-            self.coords_list[values] = TileType.HIDDEN
+        # for values in hiddenTiles2025MAY:
+        #     self.coords_list[values] = TileType.HIDDEN
 
         # Keeps only the first 6,000 
         self.beg = start[start_idx]["beg"]
-        self.end = start[start_idx]["end"] 
-        self.ceiling = self.end + 10
-        self.length = self.ceiling-self.beg
-        self.coords_list = {k: self.coords_list[k] for k in list(self.coords_list.keys())[self.beg*self.height:self.length*self.height]}
+        self.length = start[start_idx]["end"] - self.beg
+        self.tileBeg = self.beg*self.height
+        self.tileEnd = start[start_idx]["end"] * self.height
+
+        
+
+        for values in start[start_idx]["tiles"]:
+            self.coords_list[values] = TileType.SPACE
+
+        self.action_keys = list(self.coords_list.keys())[self.tileBeg:self.tileEnd]
+    
         # to get indexed version of dict
-        self.action_keys = list(self.coords_list.keys())
+        
         self.cache = {}
         self.reset()
 
@@ -90,14 +127,21 @@ class SnakeGame:
     def reset(self):
         """Reset the game to initial state"""
         
-       
+   
+        # self.board = {k: self.coords_list[k] for k in list(self.coords_list.keys())[self.beg*self.height:(self.length+self.beg)*self.height]}
         self.board = self.coords_list.copy()
+       
+
+        
         self.next = 0
-        self.counter = 0
+        if start[start_idx]["next"]: 
+            self.next = nextMoves.index(start[start_idx]["next"])
+        self.counter = start[start_idx]["beg"]
         self.score = 0
         self.rockets = start[start_idx]["rockets"]
         self.bombs = start[start_idx]["bombs"]
         self.totalReward = 0
+        self.checkHidden()
    
 
         return self._get_observation()
@@ -113,6 +157,7 @@ class SnakeGame:
         """slice the board dict to only include the current visible area based on counter"""
         start = self.counter * self.height 
         end = start + self.width * self.height
+   
         return dict(itertools.islice(self.board.items(), start,end))
 
 
@@ -125,20 +170,22 @@ class SnakeGame:
             grid = np.zeros((self.height, self.length), dtype=np.int8)
     
             # 3. Loop through and map string symbols to numeric values for the AI
-            for key, val in self.board.items():
+            # for key, val in self.board.items():
+            for key, val in list(self.board.items())[self.tileBeg:self.tileEnd]:
+                # list(self.coords_list.keys())
                 # 5,3 -> (15, 3)
+
                 x, y = map(int, key.split(','))
+                x -= self.beg
 
                 # Map your custom Enum symbols or values to clean integers/floats
                 grid[y, x] = TILE_TYPE_MEMBERS.index(val)
     
-                    
+          
             return grid
 
         return {
             "board": get_numeric_board_array(self),
-            # "action_mask": mask or self._get_action_mask(),
-            # "inventory": np.array([self.bombs, self.rockets], dtype=np.int8)
             "rockets": np.array([self.rockets], dtype=np.int8),
             "bombs": np.array([self.bombs], dtype=np.int8)
         }
@@ -159,7 +206,9 @@ class SnakeGame:
 
             # draw tiles
             self.screen.fill(self.BLACK)
+      
             for i, (coord_str,value) in enumerate(self.getCurrentBoard().items()):
+                
                 y = int(i % self.height)
                 x = int(i / self.height)
                 rect = pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
@@ -210,8 +259,17 @@ class SnakeGame:
         # Object.entries(MOUSE_BUTTONS).find(([key,value]) => value==e.button)[0]
         # print(f"cell: ({coord}) {currVal}")
         
-        obs, reward, terminated, truncated, info  = self.handleMove([coord,e.button])
-        print(info)
+        move_result = self.handleMove([coord,e.button])
+        if move_result is None:
+            # Use current values so the step function returns valid elements
+
+            info = {"invalid_move": True}
+        else:
+            # Unpack safely since we confirmed it's not None
+            obs, reward, terminated, truncated, info = move_result
+
+        if info: 
+            print(info)
         
         # this.draw()
     def checkHidden(self):
@@ -219,7 +277,6 @@ class SnakeGame:
       for tile , value in self.getCurrentBoard().items():
         if value == TileType.HIDDEN and self.isTileVisible(tile):
           self.setTile(tile)
-        #   print(f'Revealed "H" at ${tile}')
         
       
     
@@ -346,7 +403,7 @@ class SnakeGame:
         
         elif action == Action.BOMB:
             #  can only bomb on space tile
-            if tileValue != TileType.SPACE or self.bombs <=0: return
+            if tileValue != TileType.SPACE or self.bombs <=0: return self._get_observation(), self.reward, False, False, info
             # self.reward += 0.5
             self.bombs -= 1
             arr = set()
@@ -360,17 +417,20 @@ class SnakeGame:
             
             for coord in arr:
                 self.setTile(coord)
+            
         
         self.checkHidden()
         self.checkAdvance()
 
-        
+        if (action == Action.BOMB or action == Action.ROCKET) and self.reward <= 3: self.reward -= 5
         # finalScore = self.score
+        # win condition
+        if self.counter>=self.beg+self.length-self.width:
 
-        if self.counter>=self.end:
-            self.reward += self.length*2 - self.score*2  + self.rockets * 5 + self.bombs * 5
+            self.reward += self.length*2 - self.score*2  + self.rockets * 6 + self.bombs * 6
             self.totalReward += self.reward
             info = {"score": self.score,"reward":self.reward, "move":move,"totalReward":self.totalReward, "bombs":self.bombs,"rockets":self.rockets, "eff":self.length/self.score}
+            # if self.screen : print(info)
             self.reset()
             
             terminated = True
@@ -378,6 +438,7 @@ class SnakeGame:
             return self._get_observation(), self.reward, terminated, False, info
         self.totalReward += self.reward
         info = {"score": self.score,"reward":self.reward, "move":move, "totalReward":self.totalReward , "bombs":self.bombs,"rockets":self.rockets}
+        # if self.screen : print(info)
         return self._get_observation(), self.reward, False, False, info
     
     
@@ -425,11 +486,20 @@ class SnakeGame:
                 
     def nextMove(self): 
       
-      obs, reward, terminated, truncated, info  = self.handleMove(nextMoves[self.next])
-      print(info)
-      self.render()
-    #   print(f'Next: {nextMoves[self.next]}. Next move: {nextMoves[self.next+1]}')
-      self.next += 1
+        move_result  = self.handleMove(nextMoves[self.next])
+
+        if move_result is None:
+            info = {"invalid_move": True}
+        else:
+            # Unpack safely since we confirmed it's not None
+            obs, reward, terminated, truncated, info = move_result
+
+        if info: 
+            print(info)
+    
+        self.render()
+        #   print(f'Next: {nextMoves[self.next]}. Next move: {nextMoves[self.next+1]}')
+        self.next += 1
       
     #   pos = self.getCoordinatesFromIndex(self.getCurrentBoard().findIndex(([key]) => key === nextMoves[this.next+1][0]))
     #    this.ctx.fillStyle = "green";
@@ -448,23 +518,25 @@ class SnakeGame:
     
     def _get_action_mask(self):
         # Initialize a flat mask of all zeros (all moves illegal by default)
-        mask = np.zeros(len(self.board)*3, dtype=np.int8)
+        mask = np.zeros(self.length*self.height*3, dtype=np.int8)
         
         
         # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
         available_moves = self.getAvailable()
-        
+        # qprint("avail", available_moves)
         for coord_str, action_type in available_moves:
         
-            if coord_str in self.coords_list:
-                idx = self.action_keys.index(coord_str)
-                if action_type == 3: 
-                    idx += len(self.board)*2
-                elif action_type == 2:
-                    idx += len(self.board)
-            
-            
-                mask[idx] = 1
+            # ["6,0", 1]
+            # get index of key
+            # if action, add length
+            idx = self.action_keys.index(coord_str)
+            if action_type == 3: 
+                idx += self.length*self.height*2
+            elif action_type == 2:
+                idx += self.length*self.height
+        
+            # print(coord_str, action_type, idx)
+            mask[idx] = 1
 
         
         return mask

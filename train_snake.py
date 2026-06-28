@@ -1,10 +1,7 @@
 # train_snake.py
 import os
-import numpy as np
-from stable_baselines3 import PPO
 from snake_env import SnakeEnv
 from sb3_contrib import MaskablePPO
-from sb3_contrib.common.maskable.utils import get_action_masks
 from sb3_contrib.common.wrappers import ActionMasker # 👈 Import the wrapper
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import SubprocVecEnv
@@ -12,15 +9,15 @@ import time
 
 import warnings
 
-# 1. Force Pygame/SDL to run in headless mode (No physical window needed)
-os.environ["SDL_VIDEODRIVER"] = "dummy"
+# # 1. Force Pygame/SDL to run in headless mode (No physical window needed)
+# os.environ["SDL_VIDEODRIVER"] = "dummy"
+# os.environ["TORCH_COMPILE_DISABLE"] = "1"
+# # 2. Hide massive TensorFlow CPU optimization and warning logs
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 
-# 2. Hide massive TensorFlow CPU optimization and warning logs
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-
-# 3. Mute Python deprecation noise so you can read your SB3 training tables
-warnings.filterwarnings("ignore", category=DeprecationWarning)
-warnings.filterwarnings("ignore", category=UserWarning, module="gym")
+# # 3. Mute Python deprecation noise so you can read your SB3 training tables
+# warnings.filterwarnings("ignore", category=DeprecationWarning)
+# warnings.filterwarnings("ignore", category=UserWarning, module="gym")
 
 
 def mask_fn(environment):
@@ -46,13 +43,17 @@ def train_snake(timesteps=300000, render=False):
     # 4 envs dropped to 400 fps
     # 1 env maxed out at 300 fps
     if __name__ == '__main__': # Required for Windows/Mac multiprocessing
-        env = make_vec_env(make_wrapped_env, n_envs=4, vec_env_cls=SubprocVecEnv)
+        env = make_vec_env(make_wrapped_env, n_envs=2, vec_env_cls=SubprocVecEnv)
 
     
     if os.path.exists(fn):
         print(" Found existing model! Loading weights to continue training...")
         # Load the model and connect it to your current environment
-        model = MaskablePPO.load(fn, env=env)
+        model = MaskablePPO.load(fn, 
+                                 env=env,
+                                 custom_objects={"ent_coef": 0.15,
+                                                 "learning_rate": 3e-5},
+                                 )
     else:
         model = MaskablePPO(
             "MultiInputPolicy",
@@ -87,18 +88,15 @@ def train_snake(timesteps=300000, render=False):
     env.close()
     return model
 
-def play_trained_model(model_path="snake_model", episodes=1):
-    """Watch the trained model play"""
-
-    print(f"Loading model: {model_path}")
-
+def play_trained_model(model_path="snake_model", episodes=1, render_mode=False):
+    
     # Create environment with rendering
-    env = SnakeEnv(render_mode=True)
+    env = SnakeEnv(render_mode)
     env = ActionMasker(env, mask_fn)
     # Load model
     model = MaskablePPO.load(model_path, env=env)
 
-    scores = []
+
     for episode in range(episodes):
         result = env.reset()
         if isinstance(result, tuple):
@@ -125,19 +123,15 @@ def play_trained_model(model_path="snake_model", episodes=1):
             # print(obs, reward, terminated, truncated, info)
             done = terminated or truncated
             # print(terminated, truncated, obs  )
-            time.sleep(1)
+            if render_mode:
+                time.sleep(1)
 
-        score = info.get('score', 0)
-        scores.append(score)
-        print(f"Score: {score}")
+
+
 
     env.close()
 
-    print(f"\nResults:")
-    print(f"Average Score: {sum(scores)/len(scores):.2f}")
-    print(f"Best Score: {min(scores)}")
 
-    return scores
 
 def main():
     """Main function with simple command line interface"""
@@ -160,10 +154,13 @@ def main():
                 print("Permission denied (the file might be open in another program).")
         train_snake(timesteps, render)
     elif sys.argv[1] == "play":
+        render = "--render" in sys.argv
+
         # Play trained model
-        model_path = sys.argv[2] if len(sys.argv) > 2 else "snake_model"
+        model_path = "snake_model"
+        # model_path = sys.argv[2] if len(sys.argv) > 2 else "snake_model"
         # episodes = int(sys.argv[3]) if len(sys.argv) > 3 else 5
-        play_trained_model(model_path)
+        play_trained_model(model_path, render_mode=render)
     else:
         print("Usage:")
         print("  python train_snake.py                    # Train with defaults")
