@@ -8,7 +8,7 @@ with open("_1.html", "r", encoding="utf-8") as f:
 
 # Char mapping configuration
 char_to_tile = {
-    'A': 'TileType.SPACE', 'H': 'TileType.HIDDEN', 'G': 'TileType.GRASS',
+    'A': 'TileType.SPACE', 'G': 'TileType.GRASS',
     'B': 'TileType.STARB', 'Y': 'TileType.STARY',  'S': 'TileType.STONE',
     'R': 'TileType.ROCKET', 'O': 'TileType.BOMB',  'Z': 'TileType.CHESTR',
     'X': 'TileType.CHESTB', 'C': 'TileType.CHESTOPEN'

@@ -18,12 +18,13 @@ class SnakeEnv(gym.Env):
         
         # Define action and observation space
         # Actions: every tile is an action, multiply by 3 types of actions
-        self.max_actions = self.game.length * self.game.height * 3
+        self.max_actions = self.game.tileLength * 3
         # required for ppo
         self.action_space = spaces.Discrete(self.max_actions)
 
 
         self.observation_space = spaces.Dict({
+            # shape does not include the 3 moves
             "board": spaces.Box(low=0, high=10, shape=(self.game.height, self.game.length), dtype=np.int8),
             "rockets": spaces.Box(low=0, high=10, shape=(1,), dtype=np.int8), 
             "bombs": spaces.Box(low=0, high=10, shape=(1,), dtype=np.int8)
@@ -34,27 +35,37 @@ class SnakeEnv(gym.Env):
             pygame.init()
 
   
-
-    def step(self, action_idx):
+    # sb3 interface
+    def step(self, mask_idx):
         if self.render_mode:
             self.render()
 
-        action = 1  
-
-        # qprint("hello",action_idx)
-        if action_idx >= self.game.length*self.game.height:
-            mod = int(action_idx // (self.game.length*self.game.height))
-            action += mod
-            action_idx -= self.game.length*self.game.height*mod        
+        # mask is flat 1d array 3k length. action_keys doesnt 
+        # action is 1-indexed
+        action = mask_idx // self.game.tileLength + 1
+        # position within action_keys block
+        action_idx = mask_idx % self.game.tileLength
+      
+        
+        # qprint("hello",action_idx)   
 
         # qprint([self.game.action_keys[action_idx], action])
         stats = self.game.handleMove([self.game.action_keys[action_idx], action])
         # if self.render_mode: qprint(stats[4])
         return stats
         
-
+    # sb3 interface
     def _get_action_mask(self):
-        return self.game._get_action_mask()
+        # Initialize a flat mask of all zeros (all moves illegal by default)
+        mask = np.zeros(self.max_actions, dtype=np.int8)
+        
+        # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
+        for coord_str, action_type in self.game.getAvailable():
+            # ["6,0", 1], get maskindex of this command, if action, add length
+            idx = self.game.action_keys.index(coord_str) + self.game.tileLength * (action_type - 1)
+            mask[idx] = 1
+        
+        return mask
 
     def reset(self, seed=None, options=None):
         """Reset the environment"""

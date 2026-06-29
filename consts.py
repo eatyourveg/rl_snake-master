@@ -5,7 +5,6 @@ from enum import Enum
 class TileType(Enum):
     # Name   = (Symbol, Image Path, reward)
     SPACE    = ('A', 'assets/dirt_dt.png', 0)
-    HIDDEN   = ('H', 'assets/hidden_dt.png', 0)
     GRASS    = ('G', 'assets/grass_dt.png', 0)
     STARB    = ('B', 'assets/blue_dt.png', 1)
     STARY    = ('Y', 'assets/yellow_dt.png', 3)
@@ -58,73 +57,6 @@ class TileType(Enum):
                 game_state.reward += 0.2
 TILE_TYPE_MEMBERS = list(TileType)
 
-hiddenTiles2025MAY =[
-    '2,0', '7,0', '8,5', '10,3', '11,1', '12,5', '13,4', '21,4', '23,2', '24,1', '27,3', '28,4', 
-    '29,3', '30,0', '32,0', '32,5', '35,2', '36,5', '37,1', '41,3', '41,5', '42,4', '46,2', '46,4', 
-    '47,5', '49,4', '50,2', '50,5', '51,0', '52,1', '55,4', '57,1', '57,5', '62,3', '63,5', '64,1', 
-    '67,3', '67,5', '70,0', '70,2', '71,5', '73,0', '73,3', '75,1', '77,5', '79,0', '79,2', '79,4', 
-    '81,0', '81,4', '82,1', '82,5', '84,1', '85,1', '86,0', '88,2', '88,5', '90,0', '92,3', '94,5', 
-    '97,0', '99,1', '100,5', '104,2', '108,4', '109,5', '114,5', '114,2', '118,3', '118,0', '120,5', 
-    '120,1', '120,3', '122,0', '123,5', '126,5', '130,2', '132,2', '132,4', '134,4', '135,2', '141,0', 
-    '141,4', '143,5', '144,2', '146,1', '147,2', '148,3', '148,1', '151,3', '152,1', '152,4',      
-    '154,0', '156,0', '158,0', '160,0', '152,1', '157,1', '163,1', '154,2', '152,4', '155,4', 
-    '159,4', '157,5', '170,1', '172,1', '170,3', '172,5', '175,5', '182,0', '187,0', '185,1', 
-    '179,2', '185,3', '188,3', '187,4', '188,5', '193,0', '193,2', '197,1', '197,5', '199,2', 
-    '199,5', '200,4', '201,3', '205,1', '206,2', '206,5', '208,0', '208,2', '209,1', '211,0', 
-    '212,1', '213,5', '215,1', '216,5', '218,2', '218,5', '219,0', '220,1', '222,3', '225,3', 
-    '226,1', '226,4', '227,0', '227,3', '228,1', '231,5', '235,5', '237,1', '238,5', '240,1', 
-    '241,0', '243,5', '245,1', '246,3', '246,5', '249,3', '250,0', '251,2', '253,0', '254,5', 
-    '256,5', '258,2', '258,4', '258,5', '261,0', '263,0', '264,3', '273,0', '275,2', '275,5', 
-    '276,4', '277,0', '278,1', '280,0', '280,4', '281,5', '282,0', '286,3', '286,5', '288,1', 
-    '289,2', '289,4', '290,0', '291,4', '292,5', '293,0', '293,2', '294,5', '295,1', '296,0', 
-    '299,5', '301,2', '303,4', '308,4', '310,2', '310,5', '312,0', '313,1', '314,3', '315,5', 
-    '316,3', '317,1', '318,4', '319,5', '322,0', '324,5', '329,5', '330,1', '331,2', '332,1', 
-    '332,3', '333,2', '333,4', '341,2', '344,0', '344,2', '345,5', '346,1', '347,2', '348,1', 
-    '348,5', '353,4', '356,3', '359,0', '359,4', '362,0', '362,2', '364,1', '366,0', '366,3', 
-    '368,5', '369,1', '371,2', '372,1', '373,0', '373,3', '375,5', '376,2', '377,1', '379,0', 
-    '379,5', '382,1', '382,3', '382,5', '383,0', '384,2', '384,4', '387,2', '392,2', '394,0', 
-    '394,5', '397,1', '397,5', '399,2', '400,1', '401,0', '401,5', '402,2', '403,0', '403,5', 
-    '404,1', '405,0', '405,2', '408,5', '410,4', '411,1', '413,0', '413,2', '419,2', '420,0', 
-    '420,3', '421,5', '422,3', '424,0', '424,3', '425,5', '427,3', '430,1', '431,3', '434,2', 
-    '434,4', '435,1', '437,2', '438,4', '441,1', '442,2', '443,3', '444,0', '444,2', '444,5', 
-    '446,3', '449,4', '451,1', '451,3', '453,2', '454,0', '458,1', '459,0', '459,3', '460,1', 
-    '464,3', '465,4', '466,1', '468,2', '469,5', '470,1', '472,2', '475,3', '477,0', '477,3', 
-    '479,0', '481,1', '481,3', '482,0', '484,1', '484,4', '487,3', '488,0', '492,0', '493,2', 
-    '493,4', '495,4', '496,0', '497,5', '498,1', '500,3', "501,0", "501,2", "503,0", "505,5", "507,1", "509,5", "511,1", "512,5", "515,4", "518,1", 
-  "518,5", "528,4", "529,0", "529,5", "531,4", "536,4", "537,5", "542,1", "543,0", "544,1", 
-  "544,4", "545,5", "546,2", "547,5", "550,3", "551,4", "552,1", "554,1", "555,2", "556,4", 
-  "557,2", "558,4", "559,0", "560,1", "560,5", "561,3", "562,2", "563,5", "564,2", "568,1", 
-  "569,2", "571,0", "571,2", "573,2", "573,5", "575,3", "576,0", "577,5", "579,2", "579,5", 
-  "581,1", "581,4", "584,1", "586,1", "588,0", "590,4", "592,5", "594,0", "596,0", "596,4", 
-  "599,4", "600,5", "602,0", "602,5", "603,4", "605,0", "612,5", "615,4", "617,1", "619,2", 
-  "621,4", "624,3", "625,5", "627,5", "628,2", "629,1", "629,3", "635,4", "636,0", "637,2", 
-  "638,5", "640,0", "644,0", "645,2", "648,0", "648,3", "648,5", "649,2", "650,3", "652,0", 
-  "653,3", "655,1", "658,0", "659,2", "660,3", "661,1", "663,2", "669,0", "669,2", "672,3", 
-  "673,1", "674,2", "676,0", "676,4", "679,3", "679,5", "680,2", "682,3", "684,5", "686,5", 
-  "687,0", "688,1", "690,3", "690,5", "692,5", "693,3", "695,0", "695,5", "699,1", "700,0", 
-  "700,5", "702,3", "703,2", "705,2", "707,3", "709,2", "714,1", "715,2", "717,2", "717,4", 
-  "719,0", "720,1", "721,5", "722,4", "723,3", "724,0", "724,5", "730,0", "731,3", "732,2", 
-  "735,0", "738,0", "741,1", "742,3", "745,4", "747,2", "747,5", "751,5", "752,3", "753,0", 
-  "754,4", "756,4", "757,2", "762,0", "762,3", "764,1", "765,2", "765,4", "767,1", "767,5", 
-  "769,0", "769,2", "772,4", "773,2", "773,5", "776,5", "777,0", "779,0", "779,5", "782,2", 
-  "785,2", "786,3", "786,5", "790,4", "791,1", "799,4", "800,0", "801,2", "801,4", "802,5", 
-  "805,2", "805,5", "808,1", "809,0", "812,5", "813,1", "818,1", "818,3", "820,5", "821,3", 
-  "823,0", "823,5", "828,0", "829,3", "830,2", "830,4", "832,1", "835,2", "835,4", "836,3", 
-  "839,3", "839,5", "842,0", "842,3", "842,5", "847,5", "848,0", "848,4", "850,3", "851,0", 
-  "854,4", "857,2", "858,0", "858,3", "859,2", "859,4", "861,2", "861,5", "868,0", "868,5", 
-  "870,3", "871,0", "871,4", "873,4", "876,4", "877,0", "879,2", "880,5", "883,2", "887,3", 
-  "889,2", "892,3", "894,4", "895,0", "895,3", "897,1", "897,4", "899,1", "900,4", "902,0", 
-  "903,3", "903,5", "906,0", "906,5", "909,2", "911,4", "912,1", "913,4", "916,3", "917,4", 
-  "921,2", "921,4", "922,0", "923,1", "923,5", "925,0", "925,4", "926,5", "929,4", "930,3", 
-  "933,3", "934,0", "936,5", "938,1", "938,3", "940,1", "942,0", "942,3", "944,2", "945,0", 
-  "949,5", "952,0", "953,2", "953,4", "955,1", "955,4", "956,3", "957,5", "962,5", "963,0", 
-  "964,3", "965,0", "965,5", "967,0", "970,3", "971,0", "972,2", "973,5", "974,1", "974,3", 
-  "975,0", "976,3", "977,2", "978,1", "978,4", "980,2", "980,4", "982,4", "984,3", "985,5", 
-  "986,0", "986,3", "988,2", "988,5", "990,3", "992,0", "993,2", "995,5", "999,0", "999,5", 
-  "1000,1", "1001,0"
-]
-
-
 # {'score': 40, 'reward': 141.2, 'move': ['97,5', 3], 'totalReward': 222.6, 'bombs': 0, 'rockets': 1, 'eff': 2.625}
 # {'score': 38, 'reward': 139.2, 'move': ['97,5', 3], 'totalReward': 221.8, 'bombs': 0, 'rockets': 0, 'eff': 2.763157894736842}
 # {'score': 38, 'reward': 139.2, 'move': ['97,5', 3], 'totalReward': 221.8, 'bombs': 0, 'rockets': 0, 'eff': 2.763157894736842}
@@ -132,26 +64,8 @@ hiddenTiles2025MAY =[
 
 # {'score': 44, 'reward': 143, 'move': ['204,4', 1], 'totalReward': 232.60000000000002, 'bombs': 0, 'rockets': 2, 'eff': 2.477272727272727}
 # {'score': 41, 'reward': 155, 'move': ['204,4', 1], 'totalReward': 250.0, 'bombs': 1, 'rockets': 2, 'eff': 2.658536585365854}
-nextMoves = [
-["7,2",1],["8,2",1],["9,1",1],["12,3",1],["14,3",1],["17,5",1],["20,1",1],["14,0",1],["21,1",1],["22,1",1],
-["23,4",2],["25,4",2],["28,5",1],["30,4",1],["31,4",1],["33,3",1],["30,4",3],["37,5",1],["34,3",3],["39,2",1],
-["42,5",1],["43,5",1],["44,5",1],["45,3",1],["46,3",1],["46,3",3],["50,1",1],["51,1",1],["52,1",1],["53,1",1],
-["54,1",1],["55,1",1],["60,5",1],["59,5",3],["64,3",1],["68,4",1],["69,4",3],["70,1",1],["72,4",1],["71,3",3],
-["72,5",1],["75,3",1],["75,3",2],["78,4",2],["78,2",3],["85,5",1],["89,5",1],["90,5",1],["91,4",1],["93,1",1],
-["95,5",1],["97,4",1],["97,5",3],["101,5",1],["102,0",1],["107,1",1],["110,3",1],["111,2",1],["112,2",1],["114,2",1],
-["115,2",1],["117,2",1],["120,1",1],["122,4",1],["123,4",1],["124,5",1],["126,2",1],["127,2",1],["125,2",3],["129,2",2],["134,5",1],
-["131,5",1],["136,1",1],["137,1",1],["137,0",1],["138,1",1],["140,5",1],["139,4",3],["144,0",1],["147,1",1],["147,1",2],["147,4",3],
-["147,2",3],["158,3",2],["157,4",1],["161,3",1],["162,1",3],["163,4",1],["166,1",1],["167,1",1],["168,1",1],["169,1",1],["170,1",1],["171,2",2],
-["174,4",1],["173,3",3],["182,0",2],["184,1",1],["185,1",1],["186,1",1],["188,1",1],["189,1",1],["190,0",1],["193,2",1],
-["193,2",3],["195,5",1],["196,5",1],["198,1",1],["199,1",1],["201,1",1],["204,4",1],["206,0",1],["205,4",2],["204,2",3],["209,1",1],
-["212,2",1],["206,5",3],["217,4",1],["216,3",2],["213,3",1],["219,3",1],["221,3",1],["222,3",1],["223,3",1],["225,3",1],["222,2",3],
-["228,2",1],["229,2",1],["234,4",1],["232,1",1],["232,4",1],["236,4",1],["240,2",1],["237,4",1],["241,2",1],["243,2",1],
-["244,3",1],["248,3",1],["245,2",3],["251,2",1],["251,2",2],["255,2",1],["256,2",1],["260,5",1],["262,4",1],["264,1",1],
-["264,2",1],["268,4",1],["265,2",3],["273,5",1],["274,5",1],["276,5",1],["277,5",1],["279,2",1],["281,2",1],["283,1",1],
-["285,4",1],["281,2",3],["290,1",1],["291,1",1],["292,1",2],["293,0",3],["298,4",1],["304,1",1],["305,1",1],["307,1",1],["308,1",1],["307,2",3],["311,2",1],["312,2",1],["314,2",1],["313,2",3],["318,1",2],["320,0",1],["321,1",1],["323,2",1],["329,3",1],["332,5",1],["326,2",3],["330,3",3],["337,3",1],["338,3",1],["338,3",2],["342,3",1],["344,3",1],["345,3",1],["344,2",1],["344,4",3],["350,4",1],["352,5",1],["353,5",1],["354,5",1],["358,3",1],["359,3",1],["361,1",1],["362,1",1],["364,1",1],["366,1",1],["367,0",1],["368,0",2],["370,0",2],["373,0",1],["376,4",1],["378,2",1],["379,1",1],["379,3",3],["383,4",1],["385,4",2],["387,4",1],["388,3",1],["388,3",2],["387,1",3],["396,1",2],["400,1",1],["401,1",1],["402,0",1],["404,0",1],["403,0",3],["409,2",2],["411,3",1],["412,4",1],["414,1",2],["412,5",3],["419,5",1],["422,0",1],["425,0",1],["421,4",3],["431,5",1],["433,5",1],["434,5",1],["436,5",1],["437,4",1],["438,1",3],["443,1",1],["445,2",1],["447,2",1],["448,3",1]
-]
 
-nextMoves1 = [
+nextMoves = [[
     ["6,0", 1],  ["8,4", 1],  
     ["9,5", 1], 
     ["9,3", 1],  ["11,3", 1], ["12,4", 1], ["15,0", 1], ["16,0", 1],
@@ -276,9 +190,29 @@ nextMoves1 = [
     ["983,3", 1], ["985,3", 1], ["988,0", 1], ["989,2", 3], ["992,3", 1],
     ["991,1", 3], ["996,0", 1], ["997,0", 1], ["999,1", 1],
     ["1001,3", 1], ["998,2", 3], ["1005,0", 1]
-]
+],
+[
+["7,2",1],["8,2",1],["9,1",1],["12,3",1],["14,3",1],["17,5",1],["20,1",1],["14,0",1],["21,1",1],["22,1",1],
+["23,4",2],["25,4",2],["28,5",1],["30,4",1],["31,4",1],["33,3",1],["30,4",3],["37,5",1],["34,3",3],["39,2",1],
+["42,5",1],["43,5",1],["44,5",1],["45,3",1],["46,3",1],["46,3",3],["50,1",1],["51,1",1],["52,1",1],["53,1",1],
+["54,1",1],["55,1",1],["60,5",1],["59,5",3],["64,3",1],["68,4",1],["69,4",3],["70,1",1],["72,4",1],["71,3",3],
+["72,5",1],["75,3",1],["75,3",2],["78,4",2],["78,2",3],["85,5",1],["89,5",1],["90,5",1],["91,4",1],["93,1",1],
+["95,5",1],["97,4",1],["97,5",3],["101,5",1],["102,0",1],["107,1",1],["110,3",1],["111,2",1],["112,2",1],["114,2",1],
+["115,2",1],["117,2",1],["120,1",1],["122,4",1],["123,4",1],["124,5",1],["126,2",1],["127,2",1],["125,2",3],["129,2",2],["134,5",1],
+["131,5",1],["136,1",1],["137,1",1],["137,0",1],["138,1",1],["140,5",1],["139,4",3],["144,0",1],["147,1",1],["147,1",2],["147,4",3],
+["147,2",3],["158,3",2],["157,4",1],["161,3",1],["162,1",3],["163,4",1],["166,1",1],["167,1",1],["168,1",1],["169,1",1],["170,1",1],["171,2",2],
+["174,4",1],["173,3",3],["182,0",2],["184,1",1],["185,1",1],["186,1",1],["188,1",1],["189,1",1],["190,0",1],["193,2",1],
+["193,2",3],["195,5",1],["196,5",1],["198,1",1],["199,1",1],["201,1",1],["204,4",1],["206,0",1],["205,4",2],["204,2",3],["209,1",1],
+["212,2",1],["206,5",3],["217,4",1],["216,3",2],["213,3",1],["219,3",1],["221,3",1],["222,3",1],["223,3",1],["225,3",1],["222,2",3],
+["228,2",1],["229,2",1],["234,4",1],["232,1",1],["232,4",1],["236,4",1],["240,2",1],["237,4",1],["241,2",1],["243,2",1],
+["244,3",1],["248,3",1],["245,2",3],["251,2",1],["251,2",2],["255,2",1],["256,2",1],["260,5",1],["262,4",1],["264,1",1],
+["264,2",1],["268,4",1],["265,2",3],["273,5",1],["274,5",1],["276,5",1],["277,5",1],["279,2",1],["281,2",1],["283,1",1],
+["285,4",1],["281,2",3],["290,1",1],["291,1",1],["292,1",2],["293,0",3],["298,4",1],["304,1",1],["305,1",1],["307,1",1],["308,1",1],["307,2",3],["311,2",1],["312,2",1],["314,2",1],["313,2",3],["318,1",2],["320,0",1],["321,1",1],["323,2",1],["329,3",1],["332,5",1],["326,2",3],["330,3",3],["337,3",1],["338,3",1],["338,3",2],["342,3",1],["344,3",1],["345,3",1],["344,2",1],["344,4",3],["350,4",1],["352,5",1],["353,5",1],["354,5",1],["358,3",1],["359,3",1],["361,1",1],["362,1",1],["364,1",1],["366,1",1],["367,0",1],["368,0",2],["370,0",2],["373,0",1],["376,4",1],["378,2",1],["379,1",1],["379,3",3],["383,4",1],["385,4",2],["387,4",1],["388,3",1],["388,3",2],["387,1",3],["396,1",2],["400,1",1],["401,1",1],["402,0",1],["404,0",1],["403,0",3],["409,2",2],["411,3",1],["412,4",1],["414,1",2],["412,5",3],["419,5",1],["422,0",1],["425,0",1],["421,4",3],["431,5",1],["433,5",1],["434,5",1],["436,5",1],["437,4",1],["438,1",3],["443,1",1],["445,2",1],["447,2",1],["448,3",1]
+]]
 
-coords1 = {
+
+
+coords = {0:{
     "0": {
         "0": TileType.SPACE,
         "1": TileType.SPACE,
@@ -297,7 +231,7 @@ coords1 = {
     },
     "2": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STARB,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
@@ -314,9 +248,9 @@ coords1 = {
     "4": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "5": {
@@ -329,14 +263,14 @@ coords1 = {
     },
     "6": {
         "0": TileType.STARB,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
     },
     "7": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
         "3": TileType.SPACE,
@@ -345,7 +279,7 @@ coords1 = {
     },
     "8": {
         "0": TileType.STARB,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STARY,
         "3": TileType.STONE,
         "4": TileType.SPACE,
@@ -361,7 +295,7 @@ coords1 = {
     },
     "10": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STARB,
         "3": TileType.SPACE,
         "4": TileType.GRASS,
@@ -380,7 +314,7 @@ coords1 = {
         "1": TileType.GRASS,
         "2": TileType.STONE,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STARB,
     },
     "13": {
@@ -450,7 +384,7 @@ coords1 = {
     "21": {
         "0": TileType.STARB,
         "1": TileType.BOMB,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STARB,
         "5": TileType.GRASS,
@@ -460,7 +394,7 @@ coords1 = {
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "23": {
@@ -477,12 +411,12 @@ coords1 = {
         "2": TileType.GRASS,
         "3": TileType.STONE,
         "4": TileType.STARB,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "25": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -496,12 +430,12 @@ coords1 = {
         "5": TileType.STARY,
     },
     "27": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
         "4": TileType.STONE,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "28": {
         "0": TileType.STONE,
@@ -512,9 +446,9 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "29": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARB,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARB,
         "4": TileType.SPACE,
         "5": TileType.SPACE,
@@ -536,7 +470,7 @@ coords1 = {
         "5": TileType.STONE,
     },
     "32": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.STONE,
@@ -555,7 +489,7 @@ coords1 = {
         "0": TileType.STARB,
         "1": TileType.STARB,
         "2": TileType.STONE,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.STONE,
     },
@@ -586,13 +520,13 @@ coords1 = {
     "38": {
         "0": TileType.GRASS,
         "1": TileType.STARB,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STONE,
         "5": TileType.GRASS,
     },
     "39": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
         "3": TileType.STONE,
@@ -610,7 +544,7 @@ coords1 = {
     "41": {
         "0": TileType.STARB,
         "1": TileType.STONE,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.STONE,
         "5": TileType.SPACE,
@@ -627,21 +561,21 @@ coords1 = {
         "0": TileType.STONE,
         "1": TileType.STONE,
         "2": TileType.STARB,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.GRASS,
     },
     "44": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.STONE,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "45": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STONE,
         "3": TileType.STARB,
         "4": TileType.SPACE,
@@ -657,16 +591,16 @@ coords1 = {
     },
     "47": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
     },
     "48": {
         "0": TileType.STONE,
         "1": TileType.STONE,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -677,7 +611,7 @@ coords1 = {
         "2": TileType.SPACE,
         "3": TileType.SPACE,
         "4": TileType.STARB,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "50": {
         "0": TileType.STONE,
@@ -704,7 +638,7 @@ coords1 = {
         "5": TileType.STONE,
     },
     "53": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STONE,
         "3": TileType.GRASS,
@@ -722,14 +656,14 @@ coords1 = {
     "55": {
         "0": TileType.STARB,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
     },
     "56": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.GRASS,
         "3": TileType.STONE,
         "4": TileType.STARY,
@@ -752,7 +686,7 @@ coords1 = {
         "5": TileType.STONE,
     },
     "59": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
@@ -761,19 +695,19 @@ coords1 = {
     },
     "60": {
         "0": TileType.STONE,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
         "5": TileType.STARB,
     },
     "61": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "62": {
         "0": TileType.GRASS,
@@ -794,7 +728,7 @@ coords1 = {
     "64": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.SPACE,
         "5": TileType.SPACE,
@@ -803,13 +737,13 @@ coords1 = {
         "0": TileType.STARB,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.STONE,
     },
     "66": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STONE,
         "3": TileType.SPACE,
         "4": TileType.ROCKET,
@@ -826,17 +760,17 @@ coords1 = {
     "68": {
         "0": TileType.GRASS,
         "1": TileType.STARY,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.BOMB,
         "4": TileType.GRASS,
         "5": TileType.SPACE,
     },
     "69": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STONE,
     },
     "70": {
@@ -851,7 +785,7 @@ coords1 = {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.GRASS,
     },
@@ -869,7 +803,7 @@ coords1 = {
         "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STARY,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "74": {
         "0": TileType.GRASS,
@@ -890,7 +824,7 @@ coords1 = {
     "76": {
         "0": TileType.GRASS,
         "1": TileType.STONE,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -900,7 +834,7 @@ coords1 = {
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STONE,
     },
     "78": {
@@ -912,7 +846,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "79": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STONE,
         "3": TileType.STONE,
@@ -922,10 +856,10 @@ coords1 = {
     "80": {
         "0": TileType.STARB,
         "1": TileType.STARB,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARB,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "81": {
         "0": TileType.STONE,
@@ -937,7 +871,7 @@ coords1 = {
     },
     "82": {
         "0": TileType.STARB,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.GRASS,
         "3": TileType.STONE,
         "4": TileType.STARY,
@@ -946,7 +880,7 @@ coords1 = {
     "83": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STONE,
         "5": TileType.GRASS,
@@ -960,7 +894,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "85": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
@@ -969,7 +903,7 @@ coords1 = {
     },
     "86": {
         "0": TileType.STARB,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
         "4": TileType.STONE,
@@ -1009,7 +943,7 @@ coords1 = {
     },
     "91": {
         "0": TileType.STARY,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STARB,
         "3": TileType.STARB,
         "4": TileType.GRASS,
@@ -1029,7 +963,7 @@ coords1 = {
         "2": TileType.GRASS,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "94": {
         "0": TileType.STARB,
@@ -1044,11 +978,11 @@ coords1 = {
         "1": TileType.STONE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STARB,
     },
     "96": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.STONE,
         "3": TileType.STONE,
@@ -1057,14 +991,14 @@ coords1 = {
     },
     "97": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "98": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.GRASS,
@@ -1085,12 +1019,12 @@ coords1 = {
         "2": TileType.GRASS,
         "3": TileType.STONE,
         "4": TileType.STARB,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "101": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARB,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -1116,7 +1050,7 @@ coords1 = {
         "1": TileType.GRASS,
         "2": TileType.SPACE,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STARB,
     },
     "105": {
@@ -1125,13 +1059,13 @@ coords1 = {
         "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "106": {
         "0": TileType.STARB,
         "1": TileType.SPACE,
         "2": TileType.STONE,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.STARB,
     },
@@ -1141,7 +1075,7 @@ coords1 = {
         "2": TileType.STONE,
         "3": TileType.STONE,
         "4": TileType.STONE,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "108": {
         "0": TileType.GRASS,
@@ -1162,9 +1096,9 @@ coords1 = {
     "110": {
         "0": TileType.STARB,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARB,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STONE,
     },
     "111": {
@@ -1176,7 +1110,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "112": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
@@ -1197,13 +1131,13 @@ coords1 = {
         "2": TileType.STARB,
         "3": TileType.STONE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "115": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
     },
@@ -1216,7 +1150,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "117": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
         "3": TileType.STONE,
@@ -1242,10 +1176,10 @@ coords1 = {
     "120": {
         "0": TileType.GRASS,
         "1": TileType.STARY,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "121": {
         "0": TileType.STARB,
@@ -1269,7 +1203,7 @@ coords1 = {
         "2": TileType.GRASS,
         "3": TileType.STONE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "124": {
         "0": TileType.STONE,
@@ -1288,7 +1222,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "126": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARY,
         "2": TileType.GRASS,
         "3": TileType.STARB,
@@ -1304,23 +1238,23 @@ coords1 = {
         "5": TileType.STONE,
     },
     "128": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
         "3": TileType.STONE,
         "4": TileType.STONE,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "129": {
         "0": TileType.STARB,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.ROCKET,
         "5": TileType.STONE,
     },
     "130": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
@@ -1336,7 +1270,7 @@ coords1 = {
         "5": TileType.BOMB,
     },
     "132": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.STONE,
@@ -1352,7 +1286,7 @@ coords1 = {
         "5": TileType.SPACE,
     },
     "134": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
@@ -1372,7 +1306,7 @@ coords1 = {
         "1": TileType.STARY,
         "2": TileType.SPACE,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "137": {
@@ -1392,7 +1326,7 @@ coords1 = {
         "5": TileType.STARB,
     },
     "139": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARY,
         "2": TileType.STARB,
         "3": TileType.SPACE,
@@ -1416,11 +1350,11 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "142": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STARB,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "143": {
@@ -1443,9 +1377,9 @@ coords1 = {
         "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "146": {
         "0": TileType.SPACE,
@@ -1460,7 +1394,7 @@ coords1 = {
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.STONE,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "148": {
@@ -1477,7 +1411,7 @@ coords1 = {
         "2": TileType.SPACE,
         "3": TileType.SPACE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "150": {
         "0": TileType.GRASS,
@@ -1488,7 +1422,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "151": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STONE,
         "3": TileType.SPACE,
@@ -1498,7 +1432,7 @@ coords1 = {
     "152": {
         "0": TileType.SPACE,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARB,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -1522,13 +1456,13 @@ coords1 = {
     "155": {
         "0": TileType.STONE,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARB,
         "4": TileType.STONE,
         "5": TileType.GRASS,
     },
     "156": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.SPACE,
         "3": TileType.STONE,
@@ -1544,7 +1478,7 @@ coords1 = {
         "5": TileType.STONE,
     },
     "158": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
         "3": TileType.SPACE,
@@ -1569,11 +1503,11 @@ coords1 = {
     },
     "161": {
         "0": TileType.STONE,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "162": {
         "0": TileType.GRASS,
@@ -1592,9 +1526,9 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "164": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.ROCKET,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STARB,
         "5": TileType.GRASS,
@@ -1619,7 +1553,7 @@ coords1 = {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
     },
@@ -1635,9 +1569,9 @@ coords1 = {
         "0": TileType.STARY,
         "1": TileType.GRASS,
         "2": TileType.STONE,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "170": {
         "0": TileType.GRASS,
@@ -1667,7 +1601,7 @@ coords1 = {
         "0": TileType.STONE,
         "1": TileType.GRASS,
         "2": TileType.STARB,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STARB,
         "5": TileType.STARB,
     },
@@ -1677,19 +1611,19 @@ coords1 = {
         "2": TileType.STONE,
         "3": TileType.SPACE,
         "4": TileType.GRASS,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "175": {
         "0": TileType.STONE,
         "1": TileType.GRASS,
         "2": TileType.STARY,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "176": {
         "0": TileType.GRASS,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
         "4": TileType.SPACE,
@@ -1707,7 +1641,7 @@ coords1 = {
         "0": TileType.STONE,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.GRASS,
     },
@@ -1739,14 +1673,14 @@ coords1 = {
         "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
         "5": TileType.STARY,
     },
     "183": {
         "0": TileType.STONE,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STONE,
         "5": TileType.STARB,
@@ -1765,12 +1699,12 @@ coords1 = {
         "2": TileType.GRASS,
         "3": TileType.GRASS,
         "4": TileType.STARB,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "186": {
         "0": TileType.STARY,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STARB,
         "5": TileType.STONE,
@@ -1792,7 +1726,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "189": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.BOMB,
         "3": TileType.STARB,
@@ -1803,7 +1737,7 @@ coords1 = {
         "0": TileType.STARB,
         "1": TileType.GRASS,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.GRASS,
         "5": TileType.STARB,
     },
@@ -1812,7 +1746,7 @@ coords1 = {
         "1": TileType.SPACE,
         "2": TileType.SPACE,
         "3": TileType.STARB,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STONE,
     },
     "192": {
@@ -1821,14 +1755,14 @@ coords1 = {
         "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STARB,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "193": {
         "0": TileType.GRASS,
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.STONE,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "194": {
@@ -1848,7 +1782,7 @@ coords1 = {
         "5": TileType.ROCKET,
     },
     "196": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.STARB,
         "3": TileType.GRASS,
@@ -1877,7 +1811,7 @@ coords1 = {
         "2": TileType.STONE,
         "3": TileType.STARB,
         "4": TileType.STARY,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "200": {
         "0": TileType.STONE,
@@ -1888,7 +1822,7 @@ coords1 = {
         "5": TileType.STONE,
     },
     "201": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
@@ -1914,7 +1848,7 @@ coords1 = {
     "204": {
         "0": TileType.STONE,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -1933,7 +1867,7 @@ coords1 = {
         "2": TileType.STONE,
         "3": TileType.STARB,
         "4": TileType.STONE,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "207": {
         "0": TileType.STARB,
@@ -1948,7 +1882,7 @@ coords1 = {
         "1": TileType.GRASS,
         "2": TileType.GRASS,
         "3": TileType.GRASS,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.GRASS,
     },
     "209": {
@@ -1962,7 +1896,7 @@ coords1 = {
     "210": {
         "0": TileType.STARB,
         "1": TileType.STARB,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.STONE,
         "5": TileType.GRASS,
@@ -1973,10 +1907,10 @@ coords1 = {
         "2": TileType.SPACE,
         "3": TileType.STONE,
         "4": TileType.STARY,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "212": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARY,
         "2": TileType.GRASS,
         "3": TileType.STONE,
@@ -1997,12 +1931,12 @@ coords1 = {
         "2": TileType.STONE,
         "3": TileType.STONE,
         "4": TileType.STONE,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "215": {
         "0": TileType.STONE,
         "1": TileType.STONE,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.STARY,
         "4": TileType.SPACE,
         "5": TileType.SPACE,
@@ -2024,7 +1958,7 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "218": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.STARB,
@@ -2040,16 +1974,16 @@ coords1 = {
         "5": TileType.GRASS,
     },
     "220": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.STONE,
         "2": TileType.GRASS,
-        "3": TileType.HIDDEN,
+        "3": TileType.SPACE,
         "4": TileType.STONE,
         "5": TileType.GRASS,
     },
     "221": {
         "0": TileType.STARY,
-        "1": TileType.HIDDEN,
+        "1": TileType.SPACE,
         "2": TileType.STONE,
         "3": TileType.GRASS,
         "4": TileType.STONE,
@@ -2058,7 +1992,7 @@ coords1 = {
     "222": {
         "0": TileType.GRASS,
         "1": TileType.GRASS,
-        "2": TileType.HIDDEN,
+        "2": TileType.SPACE,
         "3": TileType.GRASS,
         "4": TileType.GRASS,
         "5": TileType.GRASS,
@@ -2069,7 +2003,7 @@ coords1 = {
         "2": TileType.STARB,
         "3": TileType.STARB,
         "4": TileType.STONE,
-        "5": TileType.HIDDEN,
+        "5": TileType.SPACE,
     },
     "224": {
         "0": TileType.GRASS,
@@ -2080,7 +2014,7 @@ coords1 = {
         "5": TileType.SPACE,
     },
     "225": {
-        "0": TileType.HIDDEN,
+        "0": TileType.SPACE,
         "1": TileType.GRASS,
         "2": TileType.STONE,
         "3": TileType.STARB,
@@ -2092,7 +2026,7 @@ coords1 = {
         "1": TileType.STARB,
         "2": TileType.GRASS,
         "3": TileType.STONE,
-        "4": TileType.HIDDEN,
+        "4": TileType.SPACE,
         "5": TileType.STARB,
     },
     "227": {
@@ -17567,9 +17501,9 @@ coords1 = {
         "4": TileType.SPACE,
         "5": TileType.SPACE,
     },
-}
+},
 
-coords = {
+1:{
     "0": {
       "0": TileType.SPACE,
       "1": TileType.SPACE,
@@ -34858,4 +34792,4 @@ coords = {
       "4": TileType.STARB,
       "5": TileType.GRASS
     }
-  }
+  }}

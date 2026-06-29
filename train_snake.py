@@ -51,8 +51,8 @@ def train_snake(timesteps=300000, render=False):
         # Load the model and connect it to your current environment
         model = MaskablePPO.load(fn, 
                                  env=env,
-                                 custom_objects={"ent_coef": 0.15,
-                                                 "learning_rate": 3e-5},
+                                #  custom_objects={"ent_coef": 0.15,
+                                #                  "learning_rate": 3e-5},
                                  )
     else:
         model = MaskablePPO(
