@@ -21,14 +21,13 @@ class SnakeEnv(gym.Env):
         self.max_actions = self.game.tileLength * 3
         # required for ppo
         self.action_space = spaces.Discrete(self.max_actions)
+        self.action_key_index = {k: i for i, k in enumerate(self.game.action_keys)}
 
-
-        self.observation_space = spaces.Dict({
-            # shape does not include the 3 moves
-            "board": spaces.Box(low=0, high=10, shape=(self.game.height, self.game.length), dtype=np.int8),
-            "rockets": spaces.Box(low=0, high=10, shape=(1,), dtype=np.int8), 
-            "bombs": spaces.Box(low=0, high=10, shape=(1,), dtype=np.int8)
-        })
+        self.observation_space = spaces.Box(
+            low=0, high=10, 
+            shape=(self.game.height * self.game.length + 2,), 
+            dtype=np.int8
+        )
 
         # Initialize pygame if render mode is human
         if self.render_mode:
@@ -42,7 +41,7 @@ class SnakeEnv(gym.Env):
 
         # mask is flat 1d array 3k length. action_keys doesnt 
         # action is 1-indexed
-        action = mask_idx // self.game.tileLength + 1
+        action = int(mask_idx // self.game.tileLength + 1)
         # position within action_keys block
         action_idx = mask_idx % self.game.tileLength
       
@@ -58,11 +57,12 @@ class SnakeEnv(gym.Env):
     def _get_action_mask(self):
         # Initialize a flat mask of all zeros (all moves illegal by default)
         mask = np.zeros(self.max_actions, dtype=np.int8)
-        
+        # qprint("avail",self.game.counter,self.game.getAvailable())
         # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
         for coord_str, action_type in self.game.getAvailable():
+            
             # ["6,0", 1], get maskindex of this command, if action, add length
-            idx = self.game.action_keys.index(coord_str) + self.game.tileLength * (action_type - 1)
+            idx = self.action_key_index[coord_str] + self.game.tileLength * (action_type - 1)
             mask[idx] = 1
         
         return mask

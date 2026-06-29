@@ -7,6 +7,7 @@ from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import SubprocVecEnv
 import time
 
+
 import warnings
 
 # # 1. Force Pygame/SDL to run in headless mode (No physical window needed)
@@ -51,16 +52,16 @@ def train_snake(timesteps=300000, render=False):
         # Load the model and connect it to your current environment
         model = MaskablePPO.load(fn, 
                                  env=env,
-                                #  custom_objects={"ent_coef": 0.15,
-                                #                  "learning_rate": 3e-5},
+                                 custom_objects={"ent_coef": 0.15,
+                                                 "learning_rate": 3e-5},
                                  )
     else:
         model = MaskablePPO(
-            "MultiInputPolicy",
+            "MlpPolicy",
             env,
             verbose=1,
             learning_rate=3e-4,       # Standard starting rate, can lower to 1e-4 if updates jump too violently
-            n_steps=2048,             # How many steps to collect per environment before updating
+            n_steps=512,             # How many steps to collect per environment before updating
             batch_size=256,           # Minibatch size for optimization (128 or 256 is good for grid boards)
             gamma=0.995,               # Discount factor (0.99 means it cares about long-term rewards)
             
@@ -74,7 +75,7 @@ def train_snake(timesteps=300000, render=False):
         # Train the model
         print("Starting training...")
         model.learn(total_timesteps=timesteps)
-
+     
         # Save the model
         model.save(fn)
         print("Model saved as 'snake_model'")

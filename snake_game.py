@@ -29,8 +29,8 @@ start = {
         "bombs": 0,
         "rockets":0,
         "beg":0,
-        # "end":69,
-        "end":97,
+        "end":69,
+        # "end":97,
         "tiles":[]
         
     },
@@ -47,7 +47,7 @@ start = {
     }
 
 }
-map_idx = 1
+map_idx = 0
 start_idx = 0
 
 class Action(Enum):
@@ -93,6 +93,7 @@ class SnakeGame:
 
         self.coords_list = {}
         # convert coord json to flat map
+ 
         for col, rows in coords[map_idx].items():
             for row, value in rows.items():
                 self.coords_list[self.getCoord(col,row)] = value
@@ -129,7 +130,7 @@ class SnakeGame:
         self.board = self.coords_list.copy()
        
 
-        
+        self._visible_tiles = set()
         self.next = 0
         if "next" in start[start_idx]:
             self.next = nextMoves[map_idx].index(start[start_idx]["next"]) 
@@ -176,6 +177,12 @@ class SnakeGame:
     
           
             return grid
+        
+        return np.concatenate([
+            get_numeric_board_array(self).flatten(),
+            [self.rockets],
+            [self.bombs]
+        ])
 
         return {
             "board": get_numeric_board_array(self),
@@ -183,6 +190,10 @@ class SnakeGame:
             "bombs": np.array([self.bombs], dtype=np.int8)
         }
     
+
+    # def _get_obs(self):
+        
+
     def render(self, mode=True):
         """Render the game"""
         if mode:
@@ -275,9 +286,11 @@ class SnakeGame:
     def getAvailable(self): 
         moves = []
         for key, val in self.getCurrentBoard().items():
-            # get all dig moves, no space, no open chests, and only visible tiles
+            # get all dig moves, no space, no open chests, and only visible 
+            # if key == "14,0": print(key,val)
             if val not in (TileType.SPACE,TileType.CHESTOPEN) and self.isTileVisible(key):
                 moves.append([key,Action.DIG.key])
+                # if key == "14,0": print(key,val)
             # rocket and bomb moves are just any space
             elif val == TileType.SPACE and self.isTileVisible(key):
                 if self.rockets > 0 : moves.append([key, Action.ROCKET.key])
@@ -285,28 +298,33 @@ class SnakeGame:
         # return flat array
         return moves
     
+    def onTileDug(self, tile):
+        self.board[tile] = TileType.SPACE
+        # when a tile becomes space, re-check all its neighbors for visibility
+        for neighbor in self.getAdjacentTiles(tile):
+            self.isTileVisible(neighbor)  # will add to set if now visible
+        # also check the tile itself
+        self.isTileVisible(tile)
 
+    # go through entire board at init, get all visible
+    # afterwards only trigger ittilevisiible on change
+    # Then getAvailable becomes a pure set lookup with no function calls:
     # if connected to 2 adjacent space tiles, the tile is visible
     def isTileVisible(self, tile):
+        # if already in set
+        if tile in self._visible_tiles:
+            return True
         # if the tile is space, thats already 1
         if self.board[tile] == TileType.SPACE:
-            return any(TileType.SPACE == self.board[tile2] for tile2 in self.getAdjacentTiles(tile))
+            visible = any(TileType.SPACE == self.board[tile2] for tile2 in self.getAdjacentTiles(tile))
         else:
             # if tile is not space, check if any connected tile is space then check if that tile has a space connected
-            for tile2 in self.getAdjacentTiles(tile):
-                if TileType.SPACE == self.board[tile2] and self.isTileVisible(tile2):
-                    return True
-        return False
-    
-    
-    def isMoveVisible(self,tile):
-      # if the tile is already revealed, it's visible
-    #   if TileType.SPACE == self.board[tile]: 
-    #     print("hello")
-    #     return True
-
-      # if adjacent to a revealed tile, it's visible
-      return self.isTileVisible(tile)
+            visible = any(TileType.SPACE == self.board[tile2] and self.isTileVisible(tile2)
+            for tile2 in self.getAdjacentTiles(tile))
+                
+        if visible:
+            self._visible_tiles.add(tile)
+        return visible
     
 
     def getAdjacentTiles(self, tile):
@@ -424,7 +442,7 @@ class SnakeGame:
         
         self.checkAdvance()
 
-        if (action == Action.BOMB or action == Action.ROCKET) and self.reward <= 3: self.reward -= 5
+        # if (action == Action.BOMB or action == Action.ROCKET) and self.reward <= 3: self.reward -= 5
         # finalScore = self.score
         # win condition
         if self.counter>=self.beg+self.length-self.width:
@@ -465,10 +483,31 @@ class SnakeGame:
       # if any tile is A or (chest and visible), advance the board. otherwise
     #   any(self.board.get(tile2) == TileType.SPACE.symbol for tile2 in self.getAdjacentTiles(tile))
         # if any(TileType.SPACE == value or (TileType.isChest(value) and self.isTileVisible(key)) for key, value in lastColArr):
-        if any((TileType.SPACE == value or TileType.isChest(value)) and self.isTileVisible(key) for key, value in lastColArr):
+        if any(self.isChestVisibleForAdvance(key) or (TileType.SPACE == value or TileType.isChest(value)) and self.isTileVisible(key) for key, value in lastColArr):
 
             advance()        
 
+    def isChestVisibleForAdvance(self,tile):
+  
+        # chest only
+        if TileType.isChest(self.board[tile]) :
+            # must be adjtiles because it has to be visible
+            adjTiles = self.getAdjacentTiles(tile)
+            col, row = self.splitCoord(tile)
+            if self.getCoord(col-1, row) in adjTiles:
+                adjTiles.remove(self.getCoord(col-1, row))
+
+            if any(self.board[t]==TileType.SPACE for t in adjTiles):
+                return True
+            
+
+           
+      
+    
+            
+
+        return False
+      
                 
     def nextMove(self): 
       

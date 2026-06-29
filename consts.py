@@ -212,7 +212,7 @@ nextMoves = [[
 
 
 
-coords = {0:{
+coords = {1:{
     "0": {
         "0": TileType.SPACE,
         "1": TileType.SPACE,
@@ -17503,7 +17503,7 @@ coords = {0:{
     },
 },
 
-1:{
+0:{
     "0": {
       "0": TileType.SPACE,
       "1": TileType.SPACE,
