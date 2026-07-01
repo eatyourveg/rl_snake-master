@@ -13,15 +13,13 @@ class SnakeEnv(gym.Env):
     def __init__(self, render_mode=False):
         super().__init__()
         self.render_mode = render_mode
-        # Initialize the game
         self.game = SnakeGame()
         
-        # Define action and observation space
         # Actions: every tile is an action, multiply by 3 types of actions
         self.max_actions = self.game.tileLength * 3
         # required for ppo
         self.action_space = spaces.Discrete(self.max_actions)
-        self.action_key_index = {k: i for i, k in enumerate(self.game.action_keys)}
+        # self.action_key_index = {k: i for i, k in enumerate(self.game.action_keys)}
 
         self.observation_space = spaces.Box(
             low=0, high=10, 
@@ -43,13 +41,13 @@ class SnakeEnv(gym.Env):
         # action is 1-indexed
         action = int(mask_idx // self.game.tileLength + 1)
         # position within action_keys block
-        action_idx = mask_idx % self.game.tileLength
+        action_idx = int(mask_idx % self.game.tileLength)
       
         
         # qprint("hello",action_idx)   
 
-        # qprint([self.game.action_keys[action_idx], action])
-        stats = self.game.handleMove([self.game.action_keys[action_idx], action])
+        # qprint([action_idx, action])
+        stats = self.game.handleMove([action_idx, action])
         # if self.render_mode: qprint(stats[4])
         return stats
         
@@ -59,24 +57,24 @@ class SnakeEnv(gym.Env):
         mask = np.zeros(self.max_actions, dtype=np.int8)
         # qprint("avail",self.game.counter,self.game.getAvailable())
         # Get your custom list of available moves, e.g., [["6,0", 1], ["8,4", 2]]
+        # dbg = []
         for coord_str, action_type in self.game.getAvailable():
-            
+            # dbg.append([coord_str, coord_str in self.game._visible_tiles])
             # ["6,0", 1], get maskindex of this command, if action, add length
-            idx = self.action_key_index[coord_str] + self.game.tileLength * (action_type - 1)
+            idx = coord_str + self.game.tileLength * (action_type - 1)
+            # print(coord_str,idx)
             mask[idx] = 1
-        
+
+        # print(dbg)
         return mask
 
     def reset(self, seed=None, options=None):
         """Reset the environment"""
         super().reset(seed=seed)
 
-        if seed is not None:
-            np.random.seed(seed)
+        # observation = self.game._get_observation()
 
-        observation = self.game._get_observation()
-
-        # observation = self.game.reset()
+        observation = self.game.reset()
         info = {"score": self.game.score}
 
         if self.render_mode:

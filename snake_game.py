@@ -29,8 +29,8 @@ start = {
         "bombs": 0,
         "rockets":0,
         "beg":0,
-        "end":69,
-        # "end":97,
+        # "end":69,
+        "end":97,
         "tiles":[]
         
     },
@@ -47,7 +47,7 @@ start = {
     }
 
 }
-map_idx = 0
+map_idx = 1
 start_idx = 0
 
 class Action(Enum):
@@ -91,13 +91,17 @@ class SnakeGame:
         self.dark_overlay = pygame.Surface((self.cell_size, self.cell_size), pygame.SRCALPHA)
         self.dark_overlay.fill((0, 0, 0, 160)) # Adjust 160 up or down for darkness preference
 
-        self.coords_list = {}
+        
         # convert coord json to flat map
- 
-        for col, rows in coords[map_idx].items():
+        
+        coordsList = coords[map_idx].items()
+        boardList = [None] * len(coordsList) * self.height
+        for col, rows in coordsList:
             for row, value in rows.items():
-                self.coords_list[self.getCoord(col,row)] = value
+                # boardList.append(value)
+                boardList[int(col)*self.height+int(row)] = value
         # print(self.coords_list)
+        self.coords_list = np.array(boardList)
         
     
 
@@ -109,18 +113,36 @@ class SnakeGame:
         self.tileBeg = self.beg*self.height
         self.tileEnd = start[start_idx]["end"] * self.height
         self.tileLength = self.length*self.height
+        self.counter = 0
         
 
-        for values in start[start_idx]["tiles"]:
-            self.coords_list[values] = TileType.SPACE
+        for key in start[start_idx]["tiles"]:
+            self.coords_list[self.keyToIndex(key)] = TileType.SPACE
+        self.board = self.coords_list.copy()
+        self._visible_tiles = set()
 
-        self.action_keys = list(self.coords_list.keys())[self.tileBeg:self.tileEnd]
-    
-        # to get indexed version of dict
+        # make only the adjacent space tiles visible to trigger the jumps
+        # for idx,tile in enumerate(self.coords_list):
+        #     if tile == TileType.SPACE:
+            
+        #         if idx>10000: break
+        #         self.counter = idx // self.height
+        #         self.isTileVisible(idx)
+     
+        # print(self._visible_tiles)
+        self._visible_tiles_init = self._visible_tiles.copy()
         
         self.cache = {}
         self.reset()
 
+    def keyToIndex(self,tile):
+        x,y = tile.split(",")
+        return int(x)*self.height+int(y)
+    
+    def indexToKey(self,index):
+        return [index // self.height, index % self.height]
+
+ 
 
     def reset(self):
         """Reset the game to initial state"""
@@ -130,7 +152,7 @@ class SnakeGame:
         self.board = self.coords_list.copy()
        
 
-        self._visible_tiles = set()
+        self._visible_tiles = self._visible_tiles_init.copy()
         self.next = 0
         if "next" in start[start_idx]:
             self.next = nextMoves[map_idx].index(start[start_idx]["next"]) 
@@ -139,7 +161,9 @@ class SnakeGame:
         self.rockets = start[start_idx]["rockets"]
         self.bombs = start[start_idx]["bombs"]
         self.totalReward = 0
-   
+        # self.reward = 0
+        self.moves = []
+        self.checkHidden()
 
         return self._get_observation()
     
@@ -152,12 +176,13 @@ class SnakeGame:
         start = self.counter * self.height 
         end = start + self.width * self.height
    
-        return dict(itertools.islice(self.board.items(), start,end))
+        return self.board[start:end]
 
 
 
     def _get_observation(self):
         
+        # get entire board
         def get_numeric_board_array(self):
             # 1. Initialize a blank 2D grid matching your board dimensions
             # Shape is (rows, columns) -> (height, width)
@@ -165,12 +190,11 @@ class SnakeGame:
     
             # 3. Loop through and map string symbols to numeric values for the AI
             # for key, val in self.board.items():
-            for key, val in list(self.board.items())[self.tileBeg:self.tileEnd]:
-                # list(self.coords_list.keys())
-                # 5,3 -> (15, 3)
-
-                x, y = map(int, key.split(','))
-                x -= self.beg
+            for idx, val in enumerate(self.board[self.tileBeg:self.tileEnd]):
+                
+                # adjust to 0
+                idx -= self.beg
+                x, y = self.indexToKey(idx)
 
                 # Map your custom Enum symbols or values to clean integers/floats
                 grid[y, x] = TILE_TYPE_MEMBERS.index(val)
@@ -189,9 +213,6 @@ class SnakeGame:
             "rockets": np.array([self.rockets], dtype=np.int8),
             "bombs": np.array([self.bombs], dtype=np.int8)
         }
-    
-
-    # def _get_obs(self):
         
 
     def render(self, mode=True):
@@ -213,14 +234,14 @@ class SnakeGame:
 
             # draw tiles
             self.screen.fill(self.BLACK)
-      
-            for i, (coord_str,value) in enumerate(self.getCurrentBoard().items()):
+            for i,value in enumerate(self.getCurrentBoard()):
                 
-                y = int(i % self.height)
-                x = int(i / self.height)
+                y = i % self.height
+                x = i // self.height
                 rect = pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
                 self.screen.blit(self.cache[value], rect)
-                if not self.isTileVisible(coord_str): self.screen.blit(self.dark_overlay, rect)
+                if not i+self.counter*self.height in (self._visible_tiles): 
+                    self.screen.blit(self.dark_overlay, rect)
 
             for i in range(self.width):
                 x = i * self.cell_size + (self.cell_size/2)
@@ -256,16 +277,14 @@ class SnakeGame:
         top = 0
         pixel_x, pixel_y = e.pos
         """cell click relative to canvas"""
+        # index 0
         col = min(int((pixel_x - left) / self.cell_size), self.width - 1)
         row = min(int((pixel_y - top) /  self.cell_size), self.height - 1)
         # cell index of current board
         # cell_index = row * self.width + col
         # tile = {column: col+self.counter, row: row}
-        coord = self.getCoord(col+self.counter, row)
-        currVal = self.board[coord]
-        # Object.entries(MOUSE_BUTTONS).find(([key,value]) => value==e.button)[0]
-        # print(f"cell: ({coord}) {currVal}")
-        
+        coord = (col+self.counter)*self.height+row
+
         move_result = self.handleMove([coord,e.button])
         if move_result is None:
             # Use current values so the step function returns valid elements
@@ -278,23 +297,24 @@ class SnakeGame:
         if info: 
             print(info)
         
-        # this.draw()
 
       
     
     # get all current legal moves and return list [["123,1",1]]
     def getAvailable(self): 
         moves = []
-        for key, val in self.getCurrentBoard().items():
+        for i in range(self.height*self.width):
+            idx = i+self.counter*self.height
+            val = self.board[idx]
             # get all dig moves, no space, no open chests, and only visible 
             # if key == "14,0": print(key,val)
-            if val not in (TileType.SPACE,TileType.CHESTOPEN) and self.isTileVisible(key):
-                moves.append([key,Action.DIG.key])
+            if val not in (TileType.SPACE,TileType.CHESTOPEN) and self.isTileVisible(idx):
+                moves.append([idx,Action.DIG.key])
                 # if key == "14,0": print(key,val)
             # rocket and bomb moves are just any space
-            elif val == TileType.SPACE and self.isTileVisible(key):
-                if self.rockets > 0 : moves.append([key, Action.ROCKET.key])
-                if self.bombs > 0 :moves.append([key, Action.BOMB.key])
+            elif val == TileType.SPACE and self.isTileVisible(idx):
+                if self.rockets > 0 : moves.append([idx, Action.ROCKET.key])
+                if self.bombs > 0 :moves.append([idx, Action.BOMB.key])
         # return flat array
         return moves
     
@@ -312,43 +332,58 @@ class SnakeGame:
     # if connected to 2 adjacent space tiles, the tile is visible
     def isTileVisible(self, tile):
         # if already in set
+    
         if tile in self._visible_tiles:
             return True
         # if the tile is space, thats already 1
+        visible = False
         if self.board[tile] == TileType.SPACE:
-            visible = any(TileType.SPACE == self.board[tile2] for tile2 in self.getAdjacentTiles(tile))
+            for tile2 in self.getAdjacentTiles(tile):
+                if TileType.SPACE == self.board[tile2]: 
+                    self._visible_tiles.add(tile2)
+                    visible = True
+                    break
+            
         else:
             # if tile is not space, check if any connected tile is space then check if that tile has a space connected
-            visible = any(TileType.SPACE == self.board[tile2] and self.isTileVisible(tile2)
-            for tile2 in self.getAdjacentTiles(tile))
+         
+            for tile2 in self.getAdjacentTiles(tile):
+                
+                if TileType.SPACE == self.board[tile2] and self.isTileVisible(tile2): 
+                    visible = True
+                    
+                    break
                 
         if visible:
             self._visible_tiles.add(tile)
         return visible
     
-
+    # returns list of indexes
     def getAdjacentTiles(self, tile):
-        adjacent = []
+        adjacentIndexes = []
+        column, row = self.indexToKey(tile)
         # Directions: right, left, down, up
         directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
         
         for dc, dr in directions:
-            column, row = self.splitCoord(tile)
-            column += dc
-            row += dr
+            # column, row = self.splitCoord(tile)
+            
 
+            dc += column
+            dr += row
+            
             # Skip if out of bounds
             # Visible columns range from counter to counter+width-1
             # Rows range from 0 to height-1
-            if column < self.counter or column >= self.counter + self.width or row < 0 or row >= self.height:
+            if dc < self.counter or dc >= self.counter + self.width or dr < 0 or dr >= self.height:
                 continue
 
-            key = self.getCoord(column, row)
+            # key = self.getCoord(column, row)
+            idx = dc * self.height + dr
             # Only add tile if it exists in the map
-            if key in self.board:
-                adjacent.append(key)
-        
-        return adjacent
+            # if key in self.board:
+            adjacentIndexes.append(idx)
+        return adjacentIndexes
     
     def splitCoord(self, coord): 
       return [int(x) for x in coord.split(',')]
@@ -369,7 +404,15 @@ class SnakeGame:
         TileType.claimTile(self,currTile)
         # Update the tile in the board
         self.board[coord] = targetSymbol
+        self._visible_tiles.add(coord)
+        # for tile in self.getAdjacentTiles(coord):
+        #     self.isTileVisible(tile)
 
+    def checkHidden(self):
+        for i in range(self.height*self.width):
+            self.isTileVisible(i+self.counter*self.height)
+        
+        # self.render()
 
     def handleMove(self, move):
         
@@ -378,25 +421,33 @@ class SnakeGame:
         tile, button = move
         tileValue = self.board[tile]
         action = Action.from_button(button)
-
+    
         # cant click opened chests or  tiles
-        if tileValue ==TileType.CHESTOPEN or not self.isTileVisible(tile): return
+        if tileValue ==TileType.CHESTOPEN or not self.isTileVisible(tile): raise Exception("firstcheck")
+            # return self._get_observation(), self.reward, True, False, {"first_check": move}
         self.reward = -1
         if action == Action.ROCKET:
             #  can only rocket on space tile
             if tileValue != TileType.SPACE or self.rockets <= 0: return
             # self.reward += 0.5
             self.rockets -= 1
-            column, row = self.splitCoord(tile)
+            column, row = self.indexToKey(tile)
             # set row to spaces
-            for i in range(self.width):
+            for addColumn in range(self.width):
                 # ignore actiontile
-                if self.counter + i == column:
+                if self.counter + addColumn == column:
                     continue
-                self.setTile(self.getCoord(self.counter + i, row))
+                self.setTile((self.counter+addColumn) * self.height + row)
+            if self.reward <2: self.reward -=2
+            elif self.reward >=5: self.reward +=2
+            elif self.reward >=2: self.reward +=1
         elif action == Action.DIG:
             # invalid move
-            if tileValue == TileType.SPACE: return
+            if tileValue == TileType.SPACE: 
+                
+                # return 
+                raise Exception(f"{move} digspace")
+                # return self._get_observation(), self.reward, True, False, {"dug_space": move}
             
             
             if tileValue == TileType.STONE: 
@@ -438,18 +489,25 @@ class SnakeGame:
             
             for coord in arr:
                 self.setTile(coord)
+
+            if self.reward <2: self.reward -=2
+            elif self.reward >=5: self.reward +=2
+            elif self.reward >=2: self.reward +=1
             
-        
+        self.checkHidden()
         self.checkAdvance()
+        self.moves.append([self.indexToKey(tile),button])
+        
 
         # if (action == Action.BOMB or action == Action.ROCKET) and self.reward <= 3: self.reward -= 5
         # finalScore = self.score
         # win condition
+        
         if self.counter>=self.beg+self.length-self.width:
-
-            self.reward += self.length*2 - self.score*2  + self.rockets * 6 + self.bombs * 6
+            eff = self.length/self.score
+            self.reward += eff*self.length + self.rockets * 6 + self.bombs * 6
             self.totalReward += self.reward
-            info = {"score": self.score,"reward":self.reward, "move":move,"totalReward":self.totalReward, "bombs":self.bombs,"rockets":self.rockets, "eff":self.length/self.score}
+            info = {"score": self.score,"reward":round(self.reward,2), "move":[self.indexToKey(tile),button],"totalReward":round(self.totalReward,1), "bombs":self.bombs,"rockets":self.rockets, "eff":round(eff,2), "moves":self.moves}
             # if self.screen : print(info)
             self.reset()
             
@@ -457,61 +515,69 @@ class SnakeGame:
             
             return self._get_observation(), self.reward, terminated, False, info
         self.totalReward += self.reward
-        info = {"score": self.score,"reward":self.reward, "move":move, "totalReward":self.totalReward , "bombs":self.bombs,"rockets":self.rockets}
+        info = {"score": self.score,"reward":round(self.reward,2), "move":[self.indexToKey(tile),button], "totalReward":round(self.totalReward,1) , "bombs":self.bombs,"rockets":self.rockets}
         # if self.screen : print(info)
         return self._get_observation(), self.reward, False, False, info
     
+    def getInfo():
+        return
     
-    def  getColumn(self,colIndex=None):
-      if not colIndex:
-        colIndex = self.counter + self.width - 1
-      start = colIndex * self.height
-      end = start + self.height
-      return list(itertools.islice(self.board.items(), start, end))
+    
+    def  getColumn(self,colIndex):
+        start = colIndex * self.height
+        return self.board[start:start+self.height]
     
 
     def checkAdvance(self):
-        lastColArr = self.getColumn()
+        colIndex = self.counter + self.width - 1
+        lastColArr = self.getColumn(colIndex)
         
         def advance():
             # print(f'advance:{self.counter}')
             self.counter += 1
             self.reward += 1
+            self.checkHidden()
             self.checkAdvance()
             # self.render()
         
-      # if any tile is A or (chest and visible), advance the board. otherwise
-    #   any(self.board.get(tile2) == TileType.SPACE.symbol for tile2 in self.getAdjacentTiles(tile))
-        # if any(TileType.SPACE == value or (TileType.isChest(value) and self.isTileVisible(key)) for key, value in lastColArr):
-        if any(self.isChestVisibleForAdvance(key) or (TileType.SPACE == value or TileType.isChest(value)) and self.isTileVisible(key) for key, value in lastColArr):
-
-            advance()        
+        # what if chest at last but has space behind it (not visible)
+        if any(
+            # if last column has chest, and spaces on the sides of it (only covers visible cells on board)
+            self.isChestVisibleForAdvance(colIndex * self.height + row) or
+            # if last column has visible space or chest
+            ((TileType.SPACE == value or TileType.isChest(value)) and self.isTileVisible(colIndex * self.height + row)) or
+            # if last column has space and has chest in front of it, advance
+            (TileType.SPACE == value and TileType.isChest(self.board[(colIndex-1)*self.height + row]))
+            #
+            for row, value in enumerate(lastColArr)
+        ):
+            advance()
 
     def isChestVisibleForAdvance(self,tile):
-  
+        
         # chest only
         if TileType.isChest(self.board[tile]) :
             # must be adjtiles because it has to be visible
-            adjTiles = self.getAdjacentTiles(tile)
-            col, row = self.splitCoord(tile)
-            if self.getCoord(col-1, row) in adjTiles:
-                adjTiles.remove(self.getCoord(col-1, row))
-
-            if any(self.board[t]==TileType.SPACE for t in adjTiles):
-                return True
+            adjIndexes = self.getAdjacentTiles(tile)
+            # col, row = self.splitCoord(tile)
             
+            # remove front tile
+            frontTile = tile - self.height
 
-           
-      
-    
-            
+            if frontTile in adjIndexes:
+                adjIndexes.remove(frontTile)
 
+            for idx in adjIndexes:
+                # print(adjIndexes, self.board[idx])
+                if self.board[idx]==TileType.SPACE: return True
         return False
       
                 
     def nextMove(self): 
-      
-        move_result  = self.handleMove(nextMoves[map_idx][self.next])
+        # ["6,0", 1], curr format
+        move = nextMoves[map_idx][self.next]
+        move[0] = move[0][0]*self.height + move[0][1]
+        move_result  = self.handleMove(move)
 
         if move_result is None:
             info = {"move": nextMoves[map_idx][self.next],"invalid_move": True}
@@ -522,7 +588,6 @@ class SnakeGame:
         if info: 
             print(info)
     
-        self.render()
         #   print(f'Next: {nextMoves[self.next]}. Next move: {nextMoves[self.next+1]}')
         self.next += 1
       
@@ -560,7 +625,6 @@ class SnakeGame:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.handle_click(event)
-                    self.render()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RIGHT:
                         
@@ -569,7 +633,7 @@ class SnakeGame:
 
 
             # Render
-            # self.render()
+            self.render()
             pygame.display.flip()
             self.clock.tick(fps)
             # Show pause indicator
